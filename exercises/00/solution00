@@ -1,0 +1,88 @@
+#lang racket
+
+;; BLATT 0
+
+;; 1 --- Notation
+;; 1.1 - Infix- und Präfixnotation (3 Punkte)
+
+; Wie unterscheiden sich Infix- und Präfixnotation?
+;  - Die Infixnotation entspricht der Darstellung wie man sie aus der Mathematik kennt.
+;    Die Operatoren stehen zwischen den Operanden.
+;    Z.B.: 2 + 3 * 5
+;  - Bei der Präfixnotation werden die Operatoren vor die Operanden geschrieben.
+;    Z.B.: (+ 2 (* 3 5)
+; Was sind die jeweiligen Vor- und Nachteile?
+;  - Vorteil der Präfixnotation ist, dass nicht auf Rechenregeln, wie Punkt-vor-Strich,
+;    geachtet werden muss. Bei der Infixnotation ist es nicht gleich ersichtlich,
+;    was zuerst berechnet werden muss.
+;  - Nachteil der Präfixnotation ist, dass sie bei längeren Rechnungen schnell
+;    unübersichtlich werden kann. Die Infixnotation ist leichter zu verstehen,
+;    da man nur von links nach rechts lesen muss.
+; Welche Notation wird für funktionale Ausdrücke in Racket verwendet?
+;  - die Präfixnotation
+
+
+;; 1.2 - Auswertung von Ausdrücken (3 Punkte)
+
+(+ 4 4 4 4)        
+; Resultat: 16
+
+(/                 
+ (/ (sin 1)
+    (cos 1))
+ (tan 1))
+; Resultat: 0.9999999999999999 (Eigentlich ist das Ergebnis: 1)
+
+;(/ 1 0)           
+; Resultat: Fehlermeldung: "/: division by zero"
+
+
+;; 1.3 - Konversion Infix-Präfix (4 Punkte)
+
+; 1+4 = 5
+(+ 1 4)            
+
+; 1+4+3+6 = 14
+(+ 1 4 3 6)        
+
+; 3-4-5 = -6
+(- 3 4 5)          
+
+; (1*4+5*6)/(3+4*5+6) = 1 5/29 (34/29 = 1.17241..)
+(/                 
+ (+ (* 1 4)
+    (* 5 6))
+ (+ 3
+    (* 4 5)
+    6))
+
+; mit x = 3: sin(x)/cos(x) = -0.1425465430742778
+((lambda (x)       
+   (/ (sin x)
+      (cos x)))
+ 3)
+
+; mit x = 3: 1-sin^2(x) = 0.980085143325183
+((lambda (x)       
+   (- 1
+      (sqr (sin x))))
+ 3)
+
+
+;; 2 --- Definition von Funktionen
+;; 2.1 - Zinsrechnung (3 Punkte)
+
+(define Zinsen
+  ; berechnet die jährlichen Zinsen anhand des Anfangskapitals K und dem Zinssatz P
+  (lambda (K P)
+  (/
+   (* K P)
+   100)))
+
+(Zinsen 3000 2)
+; Die jährlichen Zinsen betragen 60 Euro.
+
+
+;; 2.2 - Fallgesetze (12 Punkte)
+
+; #TODO
