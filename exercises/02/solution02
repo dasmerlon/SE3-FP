@@ -1,0 +1,59 @@
+#lang racket
+
+;; Blatt 2
+
+;; 1 --- Symbole und Werte, Umgebungen (9 Punkte)
+(define wuff 'Flocki)
+(define Hund wuff)
+(define Wolf 'wuff)
+
+(define (welcherNameGiltWo PersonA PersonB)
+(let ((PersonA 'Zaphod)
+      (PersonC PersonA))
+  PersonC))
+(define xs1 '(0 2 3 wuff Hund))
+(define xs3 (list wuff Hund ))
+(define xs2 (cons Hund wuff ))
+
+#|
+ 1. wuff -> 'Flocki
+ 2. Hund -> 'Flocki
+ 3. Wolf -> 'wuff
+ 4. (quote Hund) -> 'Hund
+ 5. (eval Wolf) -> 'Flocki
+ 6. (eval Hund) -> Flocki: undefined;
+                   cannot reference an identifier before its definition
+ 7. (eval 'Wolf) -> 'wuff
+ 8. (welcherNameGiltWo 'lily 'potter) -> 'lily
+ 9. (cdddr xs1) -> '(wuff Hund)  ;;(cdr(cdr(cdr xs1)))
+10. (cdr xs2) -> 'Flocki  ;;?
+11. (cdr xs3) -> '(Flocki)
+12. (sqrt 1/4) -> 1/2
+13. (eval '(welcherNameGiltWo 'Wolf 'Hund)) -> 'Wolf  ;;?
+14. (eval (welcherNameGiltWo 'Hund 'Wolf)) -> 'Flocki
+|#
+
+
+;; 2 --- Rechnen mit exakten Zahlen:
+;; 2.1 - Die Fakultät einer Zahl (2 Punkte)
+(define (fakultaet n)
+  ; berechnet die Fakultät von n
+  (cond [(= n 0) 1]
+        [(> n 0) (* n (fakultaet(- n 1)))])) 
+
+
+;; 2.2 - Potenzen von Rationalzahlen (3 Punkte)
+; #TODO
+
+
+;; 2.3 - Die Eulerzahl e: (6 Punkte)
+; #TODO
+
+
+;; 2.4 - π: (4 Zusatzpunkte)
+; #TODO
+
+
+;; 3 --- Typprädikate: (5 Punkte)
+; #TODO
+
