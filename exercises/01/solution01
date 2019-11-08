@@ -4,17 +4,16 @@
 
 ;; 1 --- Konversionsfunktionen
 ;; 1.1 - Bogenmaß und Grad (4 Punkte)
-
 (define (degrees−>radians deg)
   ; wandelt eine Gradzahl ins Bogenmaß um
   (* deg (/ pi 180)))
+
 (define (radians->degrees rad)
   ; wandelt einen Winkel im Bogenmaß in Grad um
   (* rad (/ 180 pi)))
 
 
 ;; 1.2 - Umkehrfunktion acos (3 Punkte)
-
 (define (my-acos cosinus)
   ; Umkehrfunktion der cos-Funktion
   (* 2
@@ -25,7 +24,6 @@
 
 
 ;; 1.3 - Kilometer und Seemeilen (1 Punkt)
-
 (define (nm−>km nm)
   ; wandelt Seemeilen in Kilometer um
   (* nm 1.852))
@@ -33,19 +31,23 @@
 
 ;; 2 --- Großkreisentfernung und Kurse
 ;; 2.1 - Großkreisentfernung (11 Punkte)
+(define (dg A1 A2 B1 B2)
+  ; berechnet die Großkreisentfernung dg zweier Orte A und B in Bogenmaß
+  ; 1 steht für die geographische Breite und 2 für die geographische Länge
+  (my-acos
+   (+
+    (* (sin (degrees−>radians A1))
+       (sin (degrees−>radians B1)))
+    (* (cos (degrees−>radians A1))
+       (cos (degrees−>radians B1))
+       (cos (degrees->radians (- B2 A2)))))))
 
 (define (distanzAB A1 A2 B1 B2)
-  ; berechnet die Großkreisentfernung zweier Orte in km
+  ; berechnet die Distanz zweier Orte A und B in km
+  ; 1 steht für die geographische Breite und 2 für die geographische Länge
   (nm−>km
    (* 60
-      (radians->degrees
-       (my-acos
-        (+
-         (* (sin (degrees−>radians A1))
-            (sin (degrees−>radians B1)))
-         (* (cos (degrees−>radians A1))
-            (cos (degrees−>radians B1))
-            (cos (degrees−>radians (- B2 A2))))))))))
+      (radians->degrees (dg A1 A2 B1 B2)))))
 
 (distanzAB 59.93 10.75 22.20 114.10) ;; Oslo-Hongkong
 (distanzAB 37.75 -122.45 21.32 -157.83) ;; San Francisco-Honolulu
@@ -53,12 +55,31 @@
 
 
 ;; 2.2 - Anfangskurs (4 Zusatzpunkte)
+(define (ar A1 A2 B1 B2)
+  ; berechnet den Kurswinkel ar
+(radians->degrees
+  (my-acos
+   (/
+    (- (sin (degrees->radians B1))
+       (* (cos (dg A1 A2 B1 B2))
+          (sin (degrees->radians A1))))
+    (* (cos (degrees->radians A1))
+        (sin (dg A1 A2 B1 B2)))))))
 
-; #TODO
+(define (direction A1 A2 B1 B2)
+  ; berechnet die Richtung von A nach B
+  (if (< A2 B2)
+      (ar A1 A2 B1 B2)
+      (- 360 (ar A1 A2 B1 B2)))) 
+
+#| ;; zum Testen:
+(direction 59.93 10.75 22.20 114.10) ;; Oslo-Hongkong
+(direction 37.75 -122.45 21.32 -157.83) ;; San Francisco-Honolulu
+(direction -27.10 -109.40 -12.10 -77.05) ;; Osterinsel-Lima
+|#
 
 
 ;; 2.3 - Himmelsrichtungen (6 Punkte)
-
 (define (degrees->direction deg)
   ; wandelt einen Kurswinkel in eine Himmelsrichtung um
   (cond [(<= 0 deg 11.25) 'N]
@@ -101,5 +122,10 @@
     ['NNW 337.5]
     [else 'Invalid_Input]))
 
-;(degrees->direction 234)
-;(direction->degrees 'WNW)
+#| ;; zum Testen:
+(degrees->direction (direction 59.93 10.75 22.20 114.10)) ;; Oslo-Hongkong
+(degrees->direction (direction 37.75 -122.45 21.32 -157.83)) ;; San Francisco-Honolulu
+(degrees->direction (direction -27.10 -109.40 -12.10 -77.05)) ;; Osterinsel-Lima)
+(direction->degrees 'WNW)
+(direction->degrees 'ENE)
+|#

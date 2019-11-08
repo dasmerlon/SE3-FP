@@ -1,9 +1,11 @@
 # Racket Syntax
 
-Präfixnotation: Operatoren stehen vor den Operanden, Bsp.: (+ 1 2)
+Präfixnotation: Operatoren stehen vor den Operanden, Bsp.: `(+ 1 2)`
 
-`;` Kommentar
 ```
+; Kommentar
+
 #| mehrzeiliger
-Kommentar |#
+   Kommentar |#
 ```
+
