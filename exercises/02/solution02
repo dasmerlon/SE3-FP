@@ -43,11 +43,26 @@
 
 
 ;; 2.2 - Potenzen von Rationalzahlen (3 Punkte)
-; #TODO
+(define (power r n)
+  (cond [(= n 0) 1]
+        [(odd? n)
+         (* r (power r (- n 1)))]
+        [(even? n)
+         (sqr (power r (/ n 2)))]))
 
 
 ;; 2.3 - Die Eulerzahl e: (6 Punkte)
-; #TODO
+(define (euler)
+  (eulersummand 0 (/ 1 (power 10 1000))
+  ))
+
+(define (eulersummand index precision)
+   (let
+       (
+         [summand (/ 1 (fakultaet index))])
+     (if [< summand precision] summand
+       (+ summand
+          [eulersummand (+ index 1) precision]))))
 
 
 ;; 2.4 - π: (4 Zusatzpunkte)
