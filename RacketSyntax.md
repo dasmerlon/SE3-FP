@@ -10,8 +10,10 @@ Präfixnotation: Operatoren stehen vor den Operanden, Bsp.: `(+ 1 2)`
 ```
 
 Definitionen:
-(**define** _<Name> <Wert>_)
-(**define** _<Name> <s−expression>_)
+
+(**define** _< Name > < Wert >_)
+
+(**define** _< Name > < s−expression >_)
 ```
 (define a 20)
 (define b (* 3 2))
@@ -24,7 +26,8 @@ b                             -> 6
 ```
 
 Lambda:
-(**lambda** _(<parameters>) <body>_)
+
+(**lambda** _(< parameters >) < body >_)
 ```
 (lambda (r) (* 2 r))
     ; anonyme Funktion
@@ -38,8 +41,10 @@ Lambda:
 ```
 
 Bedingte Ausdrücke:
-(**if** _<test> <consequent> <alternate>_)
-(**when** _<test> <conseqent>_)
+
+(**if** _< test > < consequent > < alternate >_)
+
+(**when** _< test > < conseqent >_)
 ```
 (define (max2 a b)
     (if (> a b)     ; wenn a>b ist,
@@ -48,21 +53,3 @@ Bedingte Ausdrücke:
 ```
 
 Folie 136
-
-
-
-
-
-and
-let*
-quasiquote
-quote
-do
-begin
-case
-set!
-letrec
-or
-else
-cond
-delay
