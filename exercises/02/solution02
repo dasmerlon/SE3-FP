@@ -36,14 +36,15 @@
 
 ;; 2 --- Rechnen mit exakten Zahlen:
 ;; 2.1 - Die Fakultät einer Zahl (2 Punkte)
-(define (fakultaet n)
+(define (factorial n)
   ; berechnet die Fakultät von n
   (cond [(= n 0) 1]
-        [(> n 0) (* n (fakultaet(- n 1)))])) 
+        [(> n 0) (* n (factorial(- n 1)))])) 
 
 
 ;; 2.2 - Potenzen von Rationalzahlen (3 Punkte)
 (define (power r n)
+  ; berechnet die Potenz r^n 
   (cond [(= n 0) 1]
         [(odd? n)
          (* r (power r (- n 1)))]
@@ -52,14 +53,14 @@
 
 
 ;; 2.3 - Die Eulerzahl e: (6 Punkte)
-(define (euler)
-  (eulersummand 0 (/ 1 (power 10 1000))
-  ))
+;(define euler
+;  (eulersummand 0 (/ 1 (power 10 1000))))
+; eulersummand: undefined;
+; cannot reference an identifier before its definition
+; #TODO ?
 
 (define (eulersummand index precision)
-   (let
-       (
-         [summand (/ 1 (fakultaet index))])
+   (let ([summand (/ 1 (factorial index))])
      (if [< summand precision] summand
        (+ summand
           [eulersummand (+ index 1) precision]))))
@@ -70,5 +71,27 @@
 
 
 ;; 3 --- Typprädikate: (5 Punkte)
-; #TODO
+(define (type-of n)
+  ; ermittelt für einen gegebenen Ausdruck den Typ
+  (cond [(boolean? n)   'boolean]
+        [(pair? n)      'pair]
+        [(list? n)      'list]
+        [(symbol? n)    'symbol]
+        [(number? n)    'number]
+        [(char? n)      'char]
+        [(string? n)    'string]
+        [(vector? n)    'vector]
+        [(procedure? n) 'procedure]))
 
+#|
+(type-of (* 2 3 4))            ; -> 'number
+(type-of (not 42))             ; -> 'boolean
+(type-of '(eins zwei drei))    ; -> 'pair
+(type-of '())                  ; -> 'list
+(define (id z) z)       
+(type-of (id "SE3"))           ; -> 'string
+(type-of (string-ref "FP" 1))  ; -> 'char
+(type-of (lambda (x) x))       ; -> 'procedure
+(type-of type-of)              ; -> 'procedure
+(type-of (type-of type-of))    ; -> 'symbol
+|#
