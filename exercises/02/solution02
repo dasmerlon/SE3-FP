@@ -53,17 +53,19 @@
 
 
 ;; 2.3 - Die Eulerzahl e: (6 Punkte)
-;(define euler
-;  (eulersummand 0 (/ 1 (power 10 1000))))
-; eulersummand: undefined;
-; cannot reference an identifier before its definition
-; #TODO ?
+(define (euler)
+  ; gibt die Eulerzahl e bis auf 1000 Stellen genau zurück
+  (eulersummand 0 (/ 1 (power 10 1000))))
 
 (define (eulersummand index precision)
+  ; ?
    (let ([summand (/ 1 (factorial index))])
-     (if [< summand precision] summand
-       (+ summand
-          [eulersummand (+ index 1) precision]))))
+     (if (< summand precision)
+         summand
+         (+ summand
+            [eulersummand (+ index 1) precision]))))
+
+; (* (euler)(power 10 1001))
 
 
 ;; 2.4 - π: (4 Zusatzpunkte)
