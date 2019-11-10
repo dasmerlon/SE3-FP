@@ -60,9 +60,7 @@ Equivalent to (**when**  (not  _test-expression_)  _body_)
     (display "hi")
     (display " there"))         > hi there
 ```
-(**cond**  [_test-expression  then-body_]  
-           [_..._]  
-           [**else**  _then-body_])             
+(**cond**  [_test-expression  then-body_]  [_..._]  [**else**  _then-body_])  
 **else** is a catch-all.
 ```
 (define (type-of n)
@@ -74,9 +72,7 @@ Equivalent to (**when**  (not  _test-expression_)  _body_)
 (type-of (not 42))              > 'boolean
 (type-of '())                   > 'list
 ```
-(**let**  ([_id  expression_]  
-           [_..._])  
-           _body_)
+(**let**  ([_id  expression_]  [_..._])  _body_)
 ```
 (let ([x 2]                     ; variable x = 2
       [y (+ 1 2)])              ; variable y = 3
