@@ -8,29 +8,71 @@
 (define Wolf 'wuff)
 
 (define (welcherNameGiltWo PersonA PersonB)
-(let ((PersonA 'Zaphod)
-      (PersonC PersonA))
-  PersonC))
+  (let ((PersonA 'Zaphod)
+        (PersonC PersonA))
+    PersonC))
 (define xs1 '(0 2 3 wuff Hund))
-(define xs3 (list wuff Hund ))
-(define xs2 (cons Hund wuff ))
+(define xs3 (list wuff Hund))
+(define xs2 (cons Hund wuff))
 
 #|
  1. wuff -> 'Flocki
+    Das Symbol 'Flocki wird der Konstante wuff zugewiesen
+
  2. Hund -> 'Flocki
+    Das Symbol 'Flocki wird der Konstante Hund indirekt zugewiesen über die Konstante wuff
+
  3. Wolf -> 'wuff
+    Das Symbol 'wuff wird der Konstante Wolf zugewiesen
+
  4. (quote Hund) -> 'Hund
+    'Hund ist eine Kurzform für (quote Hund)
+
  5. (eval Wolf) -> 'Flocki
- 6. (eval Hund) -> Flocki: undefined;
-                   cannot reference an identifier before its definition
+    eval verwendet das übergebene Symbol als Namensraum und ruft diesen auf.
+    Das übergebene Symbol ist 'wuff, daher ruft eval die Konstante wuff auf,
+    bei der das Symbol 'Flocki zugewiesen wird.
+
+ 6. (eval Hund) -> Flocki: undefined; cannot reference an identifier before its definition
+    Das übergebene Symbol ist 'Flocki, daher probiert eval die Konstante oder Methode namens
+    Flocki aufzurufen. Da es diese aber nicht gibt, kommt es zum Fehler.
+
  7. (eval 'Wolf) -> 'wuff
+    Das übergebene Symbol ist 'Wolf. Daher wird die Konstante Wolf aufgerufen,
+    bei der das Symbol 'wuff zugewiesen ist.
+
  8. (welcherNameGiltWo 'lily 'potter) -> 'lily
- 9. (cdddr xs1) -> '(wuff Hund)  ;;(cdr(cdr(cdr xs1)))
-10. (cdr xs2) -> 'Flocki  ;;?
+    Die Variablen, die im let-Block stehen, stehen erst im Rumpf des let-Blocks zur
+    Verfügung. Daher ist der Wert von PersonA beim zuweisen auf PersonC noch der Wert,
+    der der Funktion übergeben wurde ('lily) und nicht 'Zaphod.
+
+ 9. (cdddr xs1) -> '(wuff Hund) 
+    xs1 ist eine Liste mit den Symbolen 0, 2, 3, 'wuff, 'Hund.
+    (cdddr xs1) ist eine Kurzform für (cdr(cdr(cdr xs1)))
+    cdr gibt eine Liste zurück, bei der das erste Element der übergebenen Liste
+    entfernt wurde. Es werden also die ersten drei Elemente entfernt.
+
+10. (cdr xs2) -> 'Flocki
+    xs2 ist ein Paar aus den Werten der Konstanten Hund und wuff.
+    Diese entsprechen beide den Symbolen 'Flocki.
+    Durch cdr wird nur das zweite Element des Paars zurückgegeben.
+
 11. (cdr xs3) -> '(Flocki)
+    xs3 ist eine Liste, die aus den Werten der Konstanten wuff und Hund besteht.
+    cdr entfernt das erste Symbol. Das zugewiesene Symbol von Hund ist 'Flocki.
+    Zurückgegeben wird eine Liste mit dem Symbol 'Flocki.
+
 12. (sqrt 1/4) -> 1/2
-13. (eval '(welcherNameGiltWo 'Wolf 'Hund)) -> 'Wolf  ;;?
+    In der Auswertungsumgebung dürfen einfache Brüche in Infixnotation geschrieben werden
+
+13. (eval '(welcherNameGiltWo 'Wolf 'Hund)) -> 'Wolf
+    Wird an eval eine Liste übergeben, ist das erste Element der Name der
+    Methode und die darauf folgenden Elemente die Parameter.
+    Äquivalent zu: (welcherNameGiltWo 'Wolf 'Hund)
+
 14. (eval (welcherNameGiltWo 'Hund 'Wolf)) -> 'Flocki
+    Das Ergebnis des Methodenaufrufs (welcherNameGiltWo 'Hund 'Wolf) wird evaluiert. 
+    Äquivalent zu: (eval 'Hund) -> 'Flocki
 |#
 
 
@@ -58,12 +100,13 @@
   (eulersummand 0 (/ 1 (power 10 1000))))
 
 (define (eulersummand index precision)
-  ; ?
-   (let ([summand (/ 1 (factorial index))])
-     (if (< summand precision)
-         summand
-         (+ summand
-            [eulersummand (+ index 1) precision]))))
+  ; Hilfsmethode: berechnet die Eulerzahl e ab dem Summanden index bis
+  ; zu einer Genauigkeit von summand < precision
+  (let ([summand (/ 1 (factorial index))])
+    (if (< summand precision)
+        summand
+        (+ summand
+           [eulersummand (+ index 1) precision]))))
 
 ; (* (euler)(power 10 1001))
 
