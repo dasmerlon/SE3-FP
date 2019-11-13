@@ -5,31 +5,139 @@
 
 ;; 1 --- Die internationale Buchstabiertafel
 ;; 1.1 - Eine Datenstruktur für die internationale Buchstabiertafel: (4 Punkte)
-; #TODO
-
-
-;; 1.2 - Eine Codierungsfunktion: (4 Punkte)
-; #TODO
+(define buchstabiertafel
+  '((#\A Alfa)
+    (#\B Bravo)
+    (#\C Charlie)
+    (#\D Delta)
+    (#\E Echo)
+    (#\F Foxtrott)
+    (#\G Golf)
+    (#\H Hotel)
+    (#\I India)
+    (#\J Juliett)
+    (#\K Kilo)
+    (#\L Lima)
+    (#\M Mike)
+    (#\N November)
+    (#\O Oscar)
+    (#\P Papa)
+    (#\Q Quebec)
+    (#\R Romeo)
+    (#\S Sierra)
+    (#\T Tango)
+    (#\U Uniform)
+    (#\V Viktor)
+    (#\W Whiskey)
+    (#\X X-ray)
+    (#\Y Yankee)
+    (#\Z Zulu)
+    (#\0 Nadazero)
+    (#\1 Unaone)
+    (#\2 Bissotwo)
+    (#\3 Terrathree)
+    (#\4 Kartefour)
+    (#\5 Pantafive)
+    (#\6 Sosisix)
+    (#\7 Setteseven)
+    (#\8 Oktoeight)
+    (#\9 Novenine)
+    (#\, Decimal)
+    (#\. Stop)))
 
 
 ;; 1.3 - Zusatzaufgabe: (5 Zusatzpunkte)
-; #TODO
+;A-Z = 65-90
+;a-z = 97-122
+;-32
+(define (upcase char)
+  (let ([integer (char->integer char)])
+    (if (<= 97 integer 122)
+        (integer->char (- integer 32))
+        char)))
+
+; (char-upcase n)) ; alternativ
+
+
+;; 1.2 - Eine Codierungsfunktion: (4 Punkte)
+(define (buchstabencodierung char)
+         (cadr (assoc (upcase char) buchstabiertafel)))
+
+;(buchstabencodierung #\k)
 
 
 ;; 1.4 - Buchstabieren eines Textes: (8 Punkte)
-; #TODO
+(define (buchstabieren string)
+  (let ([charlist (string->list string)])
+  (if (empty? charlist)
+      '() 
+      (cons (buchstabencodierung (car charlist))
+            (buchstabieren (list->string (cdr charlist)))))))
+
+;(buchstabieren "Test1.0")
 
 
 ;; 2 --- Die internationale Flaggenalfabet
 ;; 2.1 - Eine Datenstruktur für das Flaggenalfabet: (3 Punkte)
-; #TODO
+(define flaggenalphabet
+  '((#\A A)
+    (#\B B)
+    (#\C C)
+    (#\D D)
+    (#\E E)
+    (#\F F)
+    (#\G G)
+    (#\H H)
+    (#\I I)
+    (#\J J)
+    (#\K K)
+    (#\L L)
+    (#\M M)
+    (#\N N)
+    (#\O O)
+    (#\P P)
+    (#\Q Q)
+    (#\R R)
+    (#\S S)
+    (#\T T)
+    (#\U U)
+    (#\V V)
+    (#\W W)
+    (#\X X)
+    (#\Y Y)
+    (#\Z Z)
+    (#\0 Z0)
+    (#\1 Z1)
+    (#\2 Z2)
+    (#\3 Z3)
+    (#\4 Z4)
+    (#\5 Z5)
+    (#\6 Z6)
+    (#\7 Z7)
+    (#\8 Z8)
+    (#\9 Z9)))
 
 
 ;; 2.2 - Eine Codierungsfunktion: (3 Punkte)
-; #TODO
+; Der folgende Code macht es möglich, eval auch im Programm,
+; nicht nur im Interpreter zu verwenden
+(define-namespace-anchor anc)
+(define ns (namespace-anchor->namespace anc))
+
+(define (flaggencodierung char)
+         (eval (cadr (assoc (upcase char) flaggenalphabet)) ns)) 
+
+;(flaggencodierung #\A)
 
 
 ;; 2.3 - Buchstabieren eines Textes: (8 Punkte)
-; #TODO
+; geht auch als allgemeine funktion (buchstabieren string tafel)
+(define (flaggenbuchstabieren string)
+  (let ([charlist (string->list string)])
+  (if (empty? charlist)
+      '() ;endliste?
+      (cons (flaggencodierung (car charlist))
+            (flaggenbuchstabieren (list->string (cdr charlist)))))))
 
+;(flaggenbuchstabieren "Test2")
 
