@@ -108,7 +108,8 @@
         (+ summand
            [eulersummand (+ index 1) precision]))))
 
-; (* (euler)(power 10 1001))
+; (euler)
+;(* (euler)(power 10 1001))
 
 
 ;; 2.4 - π: (4 Zusatzpunkte)
