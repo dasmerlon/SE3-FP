@@ -1,11 +1,12 @@
 #lang racket
-(require se3-bib/flaggen-module)
+(require se3-bib/flaggen-module) 
 
 ;; Blatt 3
 
 ;; 1 --- Die internationale Buchstabiertafel
 ;; 1.1 - Eine Datenstruktur für die internationale Buchstabiertafel: (4 Punkte)
 (define buchstabiertafel
+  ; ordnet den Buchstaben ihren Buchstabierschlüssel zu
   '((#\A Alfa)
     (#\B Bravo)
     (#\C Charlie)
@@ -47,27 +48,34 @@
 
 
 ;; 1.3 - Zusatzaufgabe: (5 Zusatzpunkte)
-;A-Z = 65-90
-;a-z = 97-122
-;-32
+; Alternativ: vordefinierte Funktion: (char-upcase n)) 
+; A-Z: 65-90
+; a-z = 97-122
+; Differenz: 32
 (define (upcase char)
+  ; ändert Kleinbuchstaben zu Großbuchstaben
   (let ([integer (char->integer char)])
     (if (<= 97 integer 122)
         (integer->char (- integer 32))
         char)))
 
-; (char-upcase n)) ; alternativ
-
 
 ;; 1.2 - Eine Codierungsfunktion: (4 Punkte)
 (define (buchstabencodierung char)
-         (cadr (assoc (upcase char) buchstabiertafel)))
+  ; bildet einen Buchstaben auf seinen Schlüssel ab
+  (cadr (assoc (upcase char) buchstabiertafel)))
 
 ;(buchstabencodierung #\k)
 
 
 ;; 1.4 - Buchstabieren eines Textes: (8 Punkte)
+; Hinweis: Aufgabe 2.3 ist äquivalent zu 1.4
+; Man könnte auch beide Funktionen zusammen als eine allgemeine Funktion zusammenfügen,
+; bei der man die Buchtsabier-, bzw. Flaggentafel zusammen mit dem String übergibt:
+; define (buchstabieren string tafel)
+
 (define (buchstabieren string)
+  ; bildet die Buchstaben eines Textes als eine Liste der Buchstabierschlüssel ab
   (let ([charlist (string->list string)])
   (if (empty? charlist)
       '() 
@@ -80,6 +88,7 @@
 ;; 2 --- Die internationale Flaggenalfabet
 ;; 2.1 - Eine Datenstruktur für das Flaggenalfabet: (3 Punkte)
 (define flaggenalphabet
+  ; ordnet den Buchstaben ihre Flagge zu
   '((#\A A)
     (#\B B)
     (#\C C)
@@ -119,23 +128,24 @@
 
 
 ;; 2.2 - Eine Codierungsfunktion: (3 Punkte)
-; Der folgende Code macht es möglich, eval auch im Programm,
-; nicht nur im Interpreter zu verwenden
 (define-namespace-anchor anc)
 (define ns (namespace-anchor->namespace anc))
+  ; macht es möglich, eval auch im Programm und nicht nur im Interpreter zu verwenden
 
 (define (flaggencodierung char)
-         (eval (cadr (assoc (upcase char) flaggenalphabet)) ns)) 
+  ; bildet einen Buchstaben auf seine Flagge ab
+  (eval (cadr (assoc (upcase char) flaggenalphabet)) ns)) 
 
-;(flaggencodierung #\A)
+;(flaggencodierung #\a)
 
 
 ;; 2.3 - Buchstabieren eines Textes: (8 Punkte)
-; geht auch als allgemeine funktion (buchstabieren string tafel)
+; Äquivalent zu 1.4
 (define (flaggenbuchstabieren string)
+  ; bildet die Buchstaben eines Textes als eine Liste der Flaggen ab
   (let ([charlist (string->list string)])
   (if (empty? charlist)
-      '() ;endliste?
+      '() 
       (cons (flaggencodierung (car charlist))
             (flaggenbuchstabieren (list->string (cdr charlist)))))))
 
