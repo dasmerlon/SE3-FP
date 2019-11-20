@@ -1,0 +1,15 @@
+#lang racket
+
+; 1
+
+; (max (min 2 (- 2 5)) 0)              -> 0
+; '(+ (- 2 13) 2))                     -> '(+ (- 2 13) 2))
+; (cadr '(Alle Jahre wieder))          -> 'Jahre
+; (cddr '(kommt (das Weihnachtfest)))  -> '()
+; (cons 'Listen '(ganz einfach und))   -> '(Listen ganz einfach und)
+; (cons 'Paare 'auch)                  -> '(Paare . auch)
+; (equal? (list 'Racket 'Prolog 'Java) '(Racket Prolog Java))   -> #t
+; (eq? (list 'Racket 'Prolog 'Java) (cons 'Racket '(Prolog Java)))   -> #f
+
+
+; 2
