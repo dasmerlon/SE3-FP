@@ -12,4 +12,188 @@
 ; (eq? (list 'Racket 'Prolog 'Java) (cons 'Racket '(Prolog Java)))   -> #f
 
 
-; 2
+;2
+
+;<Notmeldung>   ::= <Überschrift> <Standortangabe> <Notfallart> <Hilfeleistung> ->
+;<Peilzeichen> <Unterschrift> <OVER>
+;<Überschrift>  ::= <Notzeichen> <Notzeichen> <Notzeichen>
+;                   "HIER IST" <Schiffsname> <Schiffsname> <Schiffsname>
+;                   <Rufzeichen>
+;                   <Notzeichen> <Schiffsname> <SchiffsnameBuchstabiert>
+;                   <Rufzeichen>
+;<Standortangabe> ::= <Satz>
+;<Notfallart>     ::= <Satz>
+;<Hilfeleistung>  ::= <Satz>
+;<Peilzeichen>    ::= *Sendetaste für 10-15 Sekunden drücken
+;<Unterschrift>   ::= <Schiffsname> <Rufzeichen>
+;<OVER>           ::= "OVER"
+
+;<Notzeichen>     ::= "MAYDAY"
+;<Schiffsname>    ::= <Wort>
+;<SchiffsnameBuchstabiert> ::= <WortBuchstabiert>
+;<Rufzeichen>     ::= <WortBuchstabiert>
+
+(define buchstabiertafel
+  ; ordnet den Buchstaben ihren Buchstabierschlüssel zu
+  '((#\A "Alfa")
+    (#\B "Bravo")
+    (#\C "Charlie")
+    (#\D "Delta")
+    (#\E "Echo")
+    (#\F "Foxtrott")
+    (#\G "Golf")
+    (#\H "Hotel")
+    (#\I "India")
+    (#\J "Juliett")
+    (#\K "Kilo")
+    (#\L "Lima")
+    (#\M "Mike")
+    (#\N "November")
+    (#\O "Oscar")
+    (#\P "Papa")
+    (#\Q "Quebec")
+    (#\R "Romeo")
+    (#\S "Sierra")
+    (#\T "Tango")
+    (#\U "Uniform")
+    (#\V "Viktor")
+    (#\W "Whiskey")
+    (#\X "X-ray")
+    (#\Y "Yankee")
+    (#\Z "Zulu")
+    (#\0 Nadazero)
+    (#\1 Unaone)
+    (#\2 Bissotwo)
+    (#\3 Terrathree)
+    (#\4 Kartefour)
+    (#\5 Pantafive)
+    (#\6 Sosisix)
+    (#\7 Setteseven)
+    (#\8 Oktoeight)
+    (#\9 Novenine)
+    (#\, Decimal)
+    (#\. Stop)))
+
+(define (upcase char)
+  ; ändert Kleinbuchstaben zu Großbuchstaben
+  (let ([integer (char->integer char)])
+    (if (<= 97 integer 122)
+        (integer->char (- integer 32))
+        char)))
+
+(define (buchstabencodierung char)
+  ; bildet einen Buchstaben auf seinen Schlüssel ab
+  (cadr (assoc (upcase char) buchstabiertafel)))
+
+(define (buchstabieren string)
+  ; bildet die Buchstaben eines Textes als eine Liste der Buchstabierschlüssel ab
+  (let ([charlist (string->list string)])
+  (if (empty? charlist)
+      '() 
+      (cons (buchstabencodierung (car charlist))
+            (buchstabieren (list->string (cdr charlist)))))))
+
+;;Aufgabe 2.2:
+
+(define (notmeldung schiffsname rufzeichen standortangabe notfallart hilfeleistung)
+  (string-append
+    ( ueberschrift schiffsname rufzeichen )
+    ( positionsangabe standortangabe)
+    ( artangabe notfallart)
+    ( extraangabe hilfeleistung)
+    ( peilzeichen )
+    ( unterschrift schiffsname rufzeichen )
+    ( over )
+  )
+)
+
+;Die Überschrift: 
+(define (ueberschrift schiffsname rufzeichen)
+    ( let ( [notzeichen "MAYDAY "] )
+     (string-append
+       
+        notzeichen
+        notzeichen
+        notzeichen
+       "\nHIER IST \n"
+       
+       schiffsname " "
+       schiffsname " "
+       schiffsname " "
+       " "
+       ( string-join ( buchstabieren rufzeichen ) " " )
+       "\n"
+       
+       notzeichen
+       " "
+       schiffsname
+       " ICH BUCHSTABIERE "
+       ( string-join ( buchstabieren schiffsname ) " " )
+       
+       "\nRUFZEICHEN "
+       ( string-join ( buchstabieren rufzeichen ) " " ))))
+
+;;
+(define (positionsangabe standort) 
+  (string-append
+   "\nNOTFALLPOSITION " 
+   standort
+  )
+)
+
+(define (artangabe art) 
+  (string-append
+   "\n"
+   art
+  )
+)
+
+(define (extraangabe hilfeleistung)
+  (string-append
+   "\n"
+   (string-join hilfeleistung "\n")
+  )
+)
+
+(define (peilzeichen) 
+  " --\n"
+)
+
+(define (unterschrift schiffsname rufzeichen)       
+  (string-append
+   schiffsname
+   " "
+   ( string-join ( buchstabieren rufzeichen ) " " )
+  )
+)
+
+(define (over) 
+  "\nOVER"
+)
+
+(display ( notmeldung "BABETTE"
+             "DEJY"
+             "UNGEFAEHR 10 SM NORDOESTLICH LEUCHTTURM KIEL"
+             "SCHWERER WASSEREINBRUCH WIR SINKEN"
+             '("KEINE VERLETZTEN"
+               "VIER MANN GEHEN IN DIE RETTUNGSINSEL"
+               "SCHNELLE HILFE ERFORDERLICH" "ICH SENDE DEN TRAEGER")))
+
+(display "\n\n")
+
+(display (notmeldung "AMIRA"
+                     "AMRY"
+                     "AUF DER HOEHE 57°46'N UND BREITE 006°31'E"
+                     "NACH KENTERM AM SINKEN"
+                     '("9 MANN AN BORD"
+                       "DAS SCHIFF IS 15M LANG"
+                       "GRUENER RUMPF"
+                       "NOTFALLZEIT 0640 UTC")))
+(display "\n\n")
+
+(display(notmeldung "NAUTILUS"
+                    "DEYJ"
+                    "10 SEEMEILEN OESTLICH VON POINT NEMO 48° 52'S, 123° 23'W"
+                    "RIESENKRAKE HAT LECK IM RUMPF VERURSACHT"
+                    '("20 MANN AN BORD"
+                      "TREIBEN ANTRIEBSLOS AN DER WASSEROBERFLAECHE")))
