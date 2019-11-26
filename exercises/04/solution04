@@ -197,3 +197,108 @@
                     "RIESENKRAKE HAT LECK IM RUMPF VERURSACHT"
                     '("20 MANN AN BORD"
                       "TREIBEN ANTRIEBSLOS AN DER WASSEROBERFLAECHE")))
+
+;Aufgabe 3
+
+#|
+
+Unterschied zwischen innerer und äußerer Reduktion:
+
+Bei der inneren Reduktion werden die Terme von innen nach außen reduziert und somit die
+inneren Klammern bzw. Funktionen zuerst ausgewertet.
+
+Bei der äußeren Reduktion werden die Terme von außen nach innen reduziert und somit die
+äußeren Klammern bzw. Funktionen zuerst ausgewertet, worauf die inneren folgen.
+
+Auswertung des Ausdrucks mit beiden Reduktionsstrategien:
+
+Für (hoch3 (* 3 (+ 1 (hoch3 2))))
+
+mit 
+(define (hoch3 x) (* x x x))
+
+
+innere Reduktion:
+
+--> (hoch3 (* 3 (+ 1 (hoch3 2)))) ;
+
+--> (hoch3 (* 3 (+ 1 (* 2 2 2)))) ;(hoch3)
+
+--> (hoch3 (* 3 (+ 1 8)))         ;(*)
+
+--> (hoch3 (* 3 9))               ;(+)
+
+--> (hoch3 27)                    ;(*)
+
+--> (* 27 27 27)                  ;(hoch3)
+
+--> 19683                         ;(*)
+
+
+äußere Reduktion:
+
+--> (hoch3 (* 3 (+ 1 (hoch3 2)))) ;
+
+--> (* (* 3 (+ 1 (hoch3 2)))(* 3 (+ 1 (hoch3 2)))(* 3 (+ 1 (hoch3 2))))     ;(hoch3)
+
+--> (* (* 3 (+ 1 (* 2 2 2)))(* 3 (+ 1 (hoch3 2)))(* 3 (+ 1 (hoch3 2))))     ;(hoch3)
+
+--> (* (* 3 (+ 1 8))(* 3 (+ 1 (hoch3 2)))(* 3 (+ 1 (hoch3 2))))     ;(*)
+
+--> (* (* 3 9)(* 3 (+ 1 (hoch3 2)))(* 3 (+ 1 (hoch3 2))))     ;(+)
+
+--> (* 27 (* 3 (+ 1 (hoch3 2)))(* 3 (+ 1 (hoch3 2))))     ;(*)
+
+--> (* 27 (* 3 (+ 1 (* 2 2 2)))(* 3 (+ 1 (hoch3 2))))     ;(hoch3)
+
+--> (* 27 (* 3 (+ 1 8))(* 3 (+ 1 (hoch3 2))))     ;(*)
+
+--> (* 27 (* 3 9)(* 3 (+ 1 (hoch3 2))))     ;(+)
+
+--> (* 27 27 (* 3 (+ 1 (hoch3 2))))     ;(*)
+
+--> (* 27 27 (* 3 (+ 1 (* 2 2 2))))     ;(hoch3)
+
+--> (* 27 27 (* 3 (+ 1 8)))             ;(*)
+
+--> (* 27 27 (* 3 9))                   ;(+)
+
+--> (* 27 27 27)                        ;(*)
+
+--> 19683                         ;(*)
+
+
+In Racket wird für Funktionen die innere Reduktions verwendet.
+
+Bei Spezialformen (wie z.B. für if-Abfragen) wird jedoch die äußere Reduktion angewendet.
+
+
+;KOMMENTAR: Zu was für ein Problem führt das hier wirklich? Das new-if wird nicht terminieren!
+Bei selbstgeschriebenen Funktionen arbeitet Racket nach der inneren Reduktion,
+was bei dem new-if in der Funktion faculty zu einem unnötig höheren Rechen-
+aufwand führen würde, da die else-clause berechnet werden würde, bevor geprüft wird,
+ob dieser Fall eintritt.
+
+|#
+
+; Alyssa´s geschriebenes Programm zur Berechnung der Fakultät:
+
+#|
+(define (new-if condition? then-clause else-clause)
+  (cond (condition? then-clause)
+        (else else-clause)))
+
+(define (faculty product counter max-count)
+  (new-if (> counter max-count)
+  product
+  (faculty (* counter product)
+           (+ counter 1)
+           max-count)))
+
+(faculty 1 1 5)
+|#
+
+#|
+Bei dem Drurchlauf des Programms folgt ein "out of memory" Fehler.
+???
+|#
