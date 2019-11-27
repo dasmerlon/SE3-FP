@@ -61,18 +61,18 @@
     (#\X "X-ray")
     (#\Y "Yankee")
     (#\Z "Zulu")
-    (#\0 Nadazero)
-    (#\1 Unaone)
-    (#\2 Bissotwo)
-    (#\3 Terrathree)
-    (#\4 Kartefour)
-    (#\5 Pantafive)
-    (#\6 Sosisix)
-    (#\7 Setteseven)
-    (#\8 Oktoeight)
-    (#\9 Novenine)
-    (#\, Decimal)
-    (#\. Stop)))
+    (#\0 "Nadazero")
+    (#\1 "Unaone")
+    (#\2 "Bissotwo")
+    (#\3 "Terrathree")
+    (#\4 "Kartefour")
+    (#\5 "Pantafive")
+    (#\6 "Sosisix")
+    (#\7 "Setteseven")
+    (#\8 "Oktoeight")
+    (#\9 "Novenine")
+    (#\, "Decimal")
+    (#\. "Stop")))
 
 (define (upcase char)
   ; ändert Kleinbuchstaben zu Großbuchstaben
@@ -300,5 +300,9 @@ ob dieser Fall eintritt.
 
 #|
 Bei dem Drurchlauf des Programms folgt ein "out of memory" Fehler.
-???
+Dies passiert, da das geschriebene Programm mit der inneren Reduktion arbeitet und
+einen rekursiven Aufruf beinhaltet.
+Dies führt dazu das das Programm die Klammern  von innen nach außen auflöst und
+sobald der rekursive Aufruf erfolgt das Programm wieder in der innersten Klammer anfängt.
+Somit läuft das Programm niemals durch und führt somit zur out of memory exception.
 |#
