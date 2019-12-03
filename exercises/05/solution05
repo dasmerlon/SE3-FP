@@ -4,63 +4,77 @@
 ;; Blatt 5
 
 ;; 1 --- Mendels Land
+; (show-butterfly 'red 'dots 'straight 'hexagon)
+; (show-butterfly 'yellow 'star 'straight 'ellipse)
+; (show-butterfly 'blue 'star 'curly 'rhomb)
+
 ;; 1.1 - Analyse und Grobentwurf (12 Punkte)
-(show-butterfly 'red 'dots 'straight 'hexagon)
-(show-butterfly 'yellow 'star 'straight 'ellipse)
-(show-butterfly 'blue 'star 'curly 'rhomb)
-
 #|
-Gliederung des Programms:
+zu lösende Teilprobleme:
+- anhand der dominanten Merkmale die rezessiven Merkmale der Eltern bestimmen
+- die zu vererbenden Merkmale der Eltern bestimmen (zufällig: dominante oder rezessive)
+- bestimmen der Anzahl der Kinder
+- bestimmen der dominanten Merkmale von Kindern
+- anzeigen der Schmetterlinge (Eltern und Kinder)
 
-1.Der Hauptfunktion mendel müssen beim Aufruf die dominanten Eigenschaften von Vater und Mutter sowie die Anzahl
-  der zu erzeugenden Kinder übergeben werden.
+Gliederung:
+1. mendel (Hauptfunktion)
+   Input:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) der Mutter
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Vaters
+     - Anzahl zu erzeugender Kinder
+   Aufgabe:
+     - erzeugt die richtige Anzahl der Kinder und leitet die Erzeugung deren Merkmale ein
+   Output: Bilder von Eltern und Kindern
 
-  Die Funktion kümmert sich um die richtige Anzahl der zu erzeugenden Kinder und die eigentliche Erzeugung weiter-
-  zuleiten.
+2. createRecessiveFeatures
+   Input:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
+   Aufgabe:
+     - ermittelt anhand der dominanten Merkmale und der Dominanzregeln zufällige rezessive
+       Merkmale    
+   Output:
+     - rezessive Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
 
-  Input: dominante Eigenschaften (Farbe, Musterung, Fühlerform, Flügelform) von Mutter und Vater.
+3. selectFeatures
+   Input:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
+     - rezessive Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
+   Aufgabe:
+     - wählt aus den dominanten und rezessiven Merkmalen zufällig jeweils eines
+       der Merkmalarten aus 
+   Output:
+     - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+       eines Elternteils
 
+4. createKidsFeatures
+   Input:
+     - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+       der Mutter
+     - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+       des Vaters 
+   Aufgabe:
+     - ermittelt anhand der zu vererbenden Merkmale der Eltern und der Dominanzregeln
+       die sichtbaren dominanten Merkmale des Kindes
+   Output:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
 
-2. Das Zeichen eines Schmetterlings wird von einer weiteren Funktion übernommen, welcher die dominanten Eigen-
-   schaften der Mutter und des Vaters übergeben werden.
-   
-   Input: dominante Eigenschaften (Farbe, Musterung, Fühlerform, Flügelform) von Mutter und Vater.
+5. showButterflies
+   Input:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+       der Mutter
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+       des Vaters 
+   Aufgabe:
+     - zeigt die Schmetterlinge an
+   Output:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
 
-
-2.2. Aus den jeweiligen dominanten Eigenschaften von Mutter und Vater müssen die möglichen rezessiven Eigenschaften
-     unter der Beachtung der Dominanzregeln ermittelt werden.
-
-     Input : dominanten Eigenschaften von Mutter und Vater,
-     Output: Liste der möglichen rezessiven Eigenschaften von Mutter und Vater 
-
-
-2.3. Aus diesen möglichen rezessiven Eigenschaften muss nun zufällig eine ausgewählt werden
-
-     Input : Liste der möglichen rezessiven Eigenschaften von Mutter und Vater
-     Output: Liste von dem rezessiven Gen der jeweiligen Eigenschaften von den Eltern.
-
-
-
-2.4. Aus der dominanten und rezessiven Eigenschaft von jeweils Mutter und Vater muss eine Eigenschaft zufällig
-     ausgewählt werden.
-
-     Input : Liste von den dominanten und rezessiven Genen von jeweils Mutter und Vater.
-     Output: Liste von den vererbenden Eigenschaften der Eltern
-
-
-2.5. Aus den jeweilig zufällig ausgewählten Eigenschaften wird die prägendste Eigenschaft für das Kind unter der
-     Beachtung der Vererbungsregeln ausgewählt (Die dominante Eigenschaft gewinnt).
-     
-     Input : Liste von den vererbenden Eigenschaften der Eltern.
-     Output: Liste von den ausprägenden Eigenschaften des Kindes
-
-
-2.6. Mit diesen Informationen kann nun show-butterfly aufgerufen werden.
-
-     Input: Liste von den vererbenden Eigenschaften der Eltern.
-     
-Datenstrukturen:
-TODO
+Datenstruktur zum Speichern des Genoms:
+Die Datenstruktur ist eine Liste von Listen, bei der das erste Element jeweils ein Merkmal
+und deren zweites Element jeweils eine Liste von Merkmalen darstellt, welche dem ersten
+Merkmal unterlegen sind. Heißt: Das Merkmal an erster Stelle dominiert die Merkmale aus der
+nachfolgenden Liste.
 
 Begründung:
 TODO
