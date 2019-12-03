@@ -18,16 +18,7 @@ zu lösende Teilprobleme:
 - anzeigen der Schmetterlinge (Eltern und Kinder)
 
 Gliederung:
-1. mendel (Hauptfunktion)
-   Input:
-     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) der Mutter
-     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Vaters
-     - Anzahl zu erzeugender Kinder
-   Aufgabe:
-     - erzeugt die richtige Anzahl der Kinder und leitet die Erzeugung deren Merkmale ein
-   Output: Bilder von Eltern und Kindern
-
-2. createRecessiveFeatures
+1. createRecessiveFeatures
    Input:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
    Aufgabe:
@@ -36,7 +27,7 @@ Gliederung:
    Output:
      - rezessive Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
 
-3. selectFeatures
+2. selectFeatures
    Input:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
      - rezessive Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
@@ -47,7 +38,7 @@ Gliederung:
      - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
        eines Elternteils
 
-4. createKidsFeatures
+3. createKidsFeatures
    Input:
      - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
        der Mutter
@@ -59,7 +50,7 @@ Gliederung:
    Output:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
 
-5. showButterflies
+4. showButterflies
    Input:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
        der Mutter
@@ -67,8 +58,16 @@ Gliederung:
        des Vaters 
    Aufgabe:
      - zeigt die Schmetterlinge an
-   Output:
-     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
+
+5. mendel (Hauptfunktion)
+   Input:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) der Mutter
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Vaters
+     - Anzahl zu erzeugender Kinder
+   Aufgabe:
+     - erzeugt die richtige Anzahl der Kinder und leitet die Erzeugung deren Merkmale ein
+   Output: Bilder von Eltern und Kindern
+
 
 Datenstruktur zum Speichern des Genoms:
 Die Datenstruktur ist eine Liste von Listen, bei der das erste Element jeweils ein Merkmal
@@ -80,7 +79,24 @@ Begründung:
 TODO
 |#
 
+
 ;; 1.2 - Implementation und Erprobung (18 Punkte)
+(define dominanceRules
+  ; Datenstruktur der Dominanzregeln, wobei der Wert immer eine Liste all jener Merkmale ist,
+  ; die von dem Schlüssel dominiert werden
+  '((star . (dots stripes))
+    (dots . (stripes))
+    (stripes . (stripes))
+    (red . (green blue yellow))
+    (green . (blue yellow))
+    (blue . (yellow))
+    (yellow . (yellow))
+    (curved . (straight curly))
+    (straight . (curly))
+    (curly . (curly))
+    (ellipse . (hexagon rhomb))
+    (hexagon . (rhomb))
+    (rhomb . (rhomb))))
 
 
 ;; 2 --- Ein Vaterschaftstest (6 Zusatzpunkte)
