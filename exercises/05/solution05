@@ -78,7 +78,12 @@ Merkmal unterlegen sind. Heißt: Das Merkmal an erster Stelle dominiert die Merk
 nachfolgenden Liste.
 
 Begründung:
-TODO
+
+Das Arbeiten mit Listen ermöglicht es uns durch ihre Eigenschaften einfach mit den Merkmalen 
+umzugehen und zeitgleich die Reihenfolge der Dominanz der Merkmale zu beachten.
+Durch die Datenstruktur kann auch die Reihenfolge der Regeln bestimmt werden und die Merkmale
+müssen nicht immer für jeden Fall separat betrachtet werden, da die Nutzung von Funktionen 
+höherer Ordnung möglich ist.
 |#
 
 
