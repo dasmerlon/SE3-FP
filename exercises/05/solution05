@@ -52,7 +52,7 @@ Gliederung:
    Output:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
 
-4. showButterflies
+4. drawButterflies
    Input:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
        der Mutter
@@ -155,15 +155,27 @@ TODO
                 (createChildFeatures (cdr mother) (cdr father))))))
 
 ; Zum Testen:
-; (createChildFeatures '(red dots curly hexagon) '(yellow stripes curved hexagon))
+; (createChildFeatures '(yellow dots curly hexagon) '(red stripes curved hexagon))
 
 
+(define (mendelChildren motherDominant motherRecessive fatherDominant fatherRecessive n)
+  ; Hilfsfunktion für mendel:
+  ; erzeugt n verschiedene Kinder gleicher Eltern
+  (if (> n 0)
+      (cons (createChildFeatures (selectFeatures motherDominant motherRecessive)
+                                 (selectFeatures fatherDominant fatherRecessive))
+            (mendelChildren motherDominant motherRecessive fatherDominant fatherRecessive (- n 1)))
+      '()))
 
 
-#|
-
-|#
-
+(define (mendel motherDominant fatherDominant n)
+  ; erzeugt n Kinder anhand der dominanten Merkmale der Eltern
+  (let ([motherRecessive (createRecessiveFeatures motherDominant)]
+        [fatherRecessive (createRecessiveFeatures fatherDominant)])
+    (mendelChildren motherDominant motherRecessive fatherDominant fatherRecessive n)))
+   
+; Zum Testen:
+; (mendel '(yellow dots curly hexagon) '(red stripes curved hexagon) 5)
 
 
 ;; 2 --- Ein Vaterschaftstest (6 Zusatzpunkte)
