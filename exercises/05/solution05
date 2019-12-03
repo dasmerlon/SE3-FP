@@ -9,6 +9,63 @@
 (show-butterfly 'yellow 'star 'straight 'ellipse)
 (show-butterfly 'blue 'star 'curly 'rhomb)
 
+#|
+Gliederung des Programms:
+
+1.Der Hauptfunktion mendel müssen beim Aufruf die dominanten Eigenschaften von Vater und Mutter sowie die Anzahl
+  der zu erzeugenden Kinder übergeben werden.
+
+  Die Funktion kümmert sich um die richtige Anzahl der zu erzeugenden Kinder und die eigentliche Erzeugung weiter-
+  zuleiten.
+
+  Input: dominante Eigenschaften (Farbe, Musterung, Fühlerform, Flügelform) von Mutter und Vater.
+
+
+2. Das Zeichen eines Schmetterlings wird von einer weiteren Funktion übernommen, welcher die dominanten Eigen-
+   schaften der Mutter und des Vaters übergeben werden.
+   
+   Input: dominante Eigenschaften (Farbe, Musterung, Fühlerform, Flügelform) von Mutter und Vater.
+
+
+2.2. Aus den jeweiligen dominanten Eigenschaften von Mutter und Vater müssen die möglichen rezessiven Eigenschaften
+     unter der Beachtung der Dominanzregeln ermittelt werden.
+
+     Input : dominanten Eigenschaften von Mutter und Vater,
+     Output: Liste der möglichen rezessiven Eigenschaften von Mutter und Vater 
+
+
+2.3. Aus diesen möglichen rezessiven Eigenschaften muss nun zufällig eine ausgewählt werden
+
+     Input : Liste der möglichen rezessiven Eigenschaften von Mutter und Vater
+     Output: Liste von dem rezessiven Gen der jeweiligen Eigenschaften von den Eltern.
+
+
+
+2.4. Aus der dominanten und rezessiven Eigenschaft von jeweils Mutter und Vater muss eine Eigenschaft zufällig
+     ausgewählt werden.
+
+     Input : Liste von den dominanten und rezessiven Genen von jeweils Mutter und Vater.
+     Output: Liste von den vererbenden Eigenschaften der Eltern
+
+
+2.5. Aus den jeweilig zufällig ausgewählten Eigenschaften wird die prägendste Eigenschaft für das Kind unter der
+     Beachtung der Vererbungsregeln ausgewählt (Die dominante Eigenschaft gewinnt).
+     
+     Input : Liste von den vererbenden Eigenschaften der Eltern.
+     Output: Liste von den ausprägenden Eigenschaften des Kindes
+
+
+2.6. Mit diesen Informationen kann nun show-butterfly aufgerufen werden.
+
+     Input: Liste von den vererbenden Eigenschaften der Eltern.
+     
+Datenstrukturen:
+TODO
+
+Begründung:
+TODO
+|#
+
 ;; 1.2 - Implementation und Erprobung (18 Punkte)
 
 
