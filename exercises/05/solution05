@@ -21,11 +21,13 @@ Gliederung:
 1. createRecessiveFeatures
    Input:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
+       als Liste
    Aufgabe:
      - ermittelt anhand der dominanten Merkmale und der Dominanzregeln zufällige rezessive
        Merkmale    
    Output:
      - rezessive Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
+       als Liste
 
 2. selectFeatures
    Input:
@@ -97,6 +99,17 @@ TODO
     (ellipse . (hexagon rhomb))
     (hexagon . (rhomb))
     (rhomb . (rhomb))))
+
+(define (createRecessiveFeatures dominant)
+  ; ermittelt anhand der dominanten Merkmale und der Dominanzregeln
+  ; zufällige rezessive Merkmale
+  (if (empty? dominant)
+      '()
+      (cons (car (shuffle (assoc (car dominant) dominanceRules)))
+            (createRecessiveFeatures (cdr dominant)))))
+
+; Zum Testen:
+; (createRecessiveFeatures '(green dots straight hexagon))
 
 
 ;; 2 --- Ein Vaterschaftstest (6 Zusatzpunkte)
