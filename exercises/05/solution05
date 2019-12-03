@@ -35,7 +35,7 @@ Gliederung:
      - rezessive Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Elternteils
    Aufgabe:
      - wählt aus den dominanten und rezessiven Merkmalen zufällig jeweils eines
-       der Merkmalarten aus 
+       der Merkmale aus 
    Output:
      - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
        eines Elternteils
@@ -100,6 +100,7 @@ TODO
     (hexagon . (rhomb))
     (rhomb . (rhomb))))
 
+
 (define (createRecessiveFeatures dominant)
   ; ermittelt anhand der dominanten Merkmale und der Dominanzregeln
   ; zufällige rezessive Merkmale
@@ -110,6 +111,54 @@ TODO
 
 ; Zum Testen:
 ; (createRecessiveFeatures '(green dots straight hexagon))
+
+
+(define (selectRandomFeature x y)
+  ; Hilfsmethode für selectFeatures:
+  ; wählt einen von zwei Elementen zufällig aus
+  (let ([r (random 2)])
+    (if (= r 0)
+        x
+        y)))
+
+
+(define (selectFeatures dominant recessive)
+  ; wählt aus den dominanten und rezessiven Merkmalen zufällig jeweils eines
+  ; der Merkmale aus
+  (if (empty? dominant)
+      '()
+      (cons (selectRandomFeature (car dominant) (car recessive))
+            (selectFeatures (cdr dominant) (cdr recessive)))))
+
+; Zum Testen:
+; (selectFeatures '(green dots straight ellipse) '(yellow stripes curly hexagon))
+
+
+#|
+; wählt von den gegebenen Elementen zufällig eines aus
+(define (randomElement x y)
+  (let ((r (random 2)))
+    (if (= r 0)
+        x
+        y)))
+
+; wählt aus der Liste der dominanten und rezessiven Merkmale zufällig
+; Merkmale aus
+(define (randomSelection dominant rezessiv)
+  (letrec ((select (λ (xs ys result)
+                     (if (empty? xs)
+                         result
+                         (select (cdr xs) (cdr ys) (cons (randomElement (car xs) (car ys)) 
+                                                         result))
+                         ))))
+    (reverse (select dominant rezessiv '()))))
+
+
+
+     - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+       eines Elternteils
+|#
+
 
 
 ;; 2 --- Ein Vaterschaftstest (6 Zusatzpunkte)
