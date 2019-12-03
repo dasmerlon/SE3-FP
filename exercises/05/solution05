@@ -1,1 +1,15 @@
 #lang racket
+(require se3-bib/butterfly-module)
+
+;; Blatt 5
+
+;; 1 --- Mendels Land
+;; 1.1 - Analyse und Grobentwurf (12 Punkte)
+(show-butterfly 'red 'dots 'straight 'hexagon)
+(show-butterfly 'yellow 'star 'straight 'ellipse)
+(show-butterfly 'blue 'star 'curly 'rhomb)
+
+;; 1.2 - Implementation und Erprobung (18 Punkte)
+
+
+;; 2 --- Ein Vaterschaftstest (6 Zusatzpunkte)
