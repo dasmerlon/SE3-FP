@@ -135,28 +135,7 @@ TODO
 
 
 #|
-; wählt von den gegebenen Elementen zufällig eines aus
-(define (randomElement x y)
-  (let ((r (random 2)))
-    (if (= r 0)
-        x
-        y)))
 
-; wählt aus der Liste der dominanten und rezessiven Merkmale zufällig
-; Merkmale aus
-(define (randomSelection dominant rezessiv)
-  (letrec ((select (λ (xs ys result)
-                     (if (empty? xs)
-                         result
-                         (select (cdr xs) (cdr ys) (cons (randomElement (car xs) (car ys)) 
-                                                         result))
-                         ))))
-    (reverse (select dominant rezessiv '()))))
-
-
-
-     - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
-       eines Elternteils
 |#
 
 
