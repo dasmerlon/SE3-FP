@@ -37,10 +37,10 @@ Gliederung:
      - wählt aus den dominanten und rezessiven Merkmalen zufällig jeweils eines
        der Merkmale aus 
    Output:
-     - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
-       eines Elternteils
+     - die zufälligen zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform,
+       Flügelform) eines Elternteils
 
-3. createKidsFeatures
+3. createChildFeatures
    Input:
      - die zu vererbenden Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
        der Mutter
@@ -134,8 +134,37 @@ TODO
 ; (selectFeatures '(green dots straight ellipse) '(yellow stripes curly hexagon))
 
 
+(define (inList? x list)
+  ; Hilfmethode für createChildFeatures:
+  ; prüft ob ein Element in einer Liste erhalten ist
+  (cond
+    [(empty? list) false]
+    [(equal? (car list) x) true]     ;; ERROR?    (equal? (car '(a b)) 'a) => #t
+    [else (inList? (cdr list) x)]))
+
+
+(define (createChildFeatures mother father)
+  ; ermittelt anhand zufälliger Merkmale der Eltern und der Dominanzregeln
+  ; die sichtbaren dominanten Merkmale des Kindes
+  (if (empty? mother)
+      '()
+      (if (inList? (car mother) (assoc (car father) dominanceRules))
+          (cons (car father)
+                (createChildFeatures (cdr mother) (cdr father)))
+          (cons (car mother)
+                (createChildFeatures (cdr mother) (cdr father))))))
+
+
+; Zum Testen:
+; (createChildFeatures '(red dots straight hexagon) '(yellow stripes curly hexagon))
+
+
+
+
 #|
 
+   Output:
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
 |#
 
 
