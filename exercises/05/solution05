@@ -135,12 +135,12 @@ TODO
 
 
 (define (inList? x list)
-  ; Hilfmethode für createChildFeatures:
+  ; Hilfsmethode für createChildFeatures:
   ; prüft ob ein Element in einer Liste erhalten ist
   (cond
     [(empty? list) false]
-    [(equal? (car list) x) true]     ;; ERROR?    (equal? (car '(a b)) 'a) => #t
-    [else (inList? (cdr list) x)]))
+    [(equal? x (car list)) true]     
+    [else (inList? x (cdr list))]))
 
 
 (define (createChildFeatures mother father)
@@ -154,17 +154,14 @@ TODO
           (cons (car mother)
                 (createChildFeatures (cdr mother) (cdr father))))))
 
-
 ; Zum Testen:
-; (createChildFeatures '(red dots straight hexagon) '(yellow stripes curly hexagon))
+; (createChildFeatures '(red dots curly hexagon) '(yellow stripes curved hexagon))
 
 
 
 
 #|
 
-   Output:
-     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
 |#
 
 
