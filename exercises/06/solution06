@@ -1,1 +1,27 @@
 #lang racket
+
+#|
+Endrekursion:
+Rekursive Funktionen, bei denen das Ergebnis der Rekursion nicht mehr mit anderen Termen
+verknüpft werden muß, heißen endrekursiv (engl. tail-recursion).
+Die zugehörigen Prozesse heißen iterative Prozesse.
+
+Lineare Rekursion:
+
+
+Baumartige Rekursion:
+Eine rekursive Definition ist baumartig, wenn in der Definition in einer Fallunterscheidung
+mehrfach auf die Definition Bezug genommen wird.
+
+Geschachtelte Rekursion:
+Eine Rekursion ist geschachtelt, wenn die Funktion in der rekursiven Verwendung selbst als
+Argument mitgegeben wird.
+
+Direkte Rekursion:
+
+
+Indirekte Rekursion:
+Eine rekursive Definiton heißt indirekt oder verschränkt, wenn zwei oder mehrere Definitionen
+sich wechselseitig rekursiv verwenden.
+
+|#
