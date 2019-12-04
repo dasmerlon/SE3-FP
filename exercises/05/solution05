@@ -52,14 +52,11 @@ Gliederung:
    Output:
      - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) des Kindes
 
-4. drawButterflies
+4. drawButterfly
    Input:
-     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
-       der Mutter
-     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
-       des Vaters 
+     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform) eines Schmetterlings
    Aufgabe:
-     - zeigt die Schmetterlinge an
+     - zeigt den Schmetterling an
 
 5. mendel (Hauptfunktion)
    Input:
@@ -162,6 +159,17 @@ höherer Ordnung möglich ist.
 ; (createChildFeatures '(yellow dots curly hexagon) '(red stripes curved hexagon))
 
 
+(define (drawButterfly dominant)
+  ; zeichnet Schmetterling
+  (show-butterfly (car dominant)
+                  (cadr dominant)
+                  (caddr dominant) 
+                  (cadddr dominant)))
+
+; Zum Testen:
+; (drawButterfly '(red stripes curved hexagon))
+
+
 (define (mendelChildren motherDominant motherRecessive fatherDominant fatherRecessive n)
   ; Hilfsfunktion für mendel:
   ; erzeugt n verschiedene Kinder gleicher Eltern
@@ -182,4 +190,16 @@ höherer Ordnung möglich ist.
 ; (mendel '(yellow dots curly hexagon) '(red stripes curved hexagon) 5)
 
 
+
+  
+; (show-butterfly 'red 'dots 'straight 'hexagon)
+
 ;; 2 --- Ein Vaterschaftstest (6 Zusatzpunkte)
+;drawButterflies
+ ;  Input:
+;     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+  ;     der Mutter
+   ;  - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
+    ;   des Vaters 
+ ;  Aufgabe:
+  ;   - zeigt die Schmetterlinge an
