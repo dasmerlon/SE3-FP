@@ -174,8 +174,8 @@ höherer Ordnung möglich ist.
   ; Hilfsfunktion für mendel:
   ; erzeugt n verschiedene Kinder gleicher Eltern
   (if (> n 0)
-      (cons (createChildFeatures (selectFeatures motherDominant motherRecessive)
-                                 (selectFeatures fatherDominant fatherRecessive))
+      (cons (drawButterfly (createChildFeatures (selectFeatures motherDominant motherRecessive)
+                                                (selectFeatures fatherDominant fatherRecessive)))
             (mendelChildren motherDominant motherRecessive fatherDominant fatherRecessive (- n 1)))
       '()))
 
@@ -184,22 +184,12 @@ höherer Ordnung möglich ist.
   ; erzeugt n Kinder anhand der dominanten Merkmale der Eltern
   (let ([motherRecessive (createRecessiveFeatures motherDominant)]
         [fatherRecessive (createRecessiveFeatures fatherDominant)])
-    (mendelChildren motherDominant motherRecessive fatherDominant fatherRecessive n)))
+    (cons (drawButterfly motherDominant)
+          (cons (drawButterfly fatherDominant)
+                (mendelChildren motherDominant motherRecessive fatherDominant fatherRecessive n)))))
    
 ; Zum Testen:
-; (mendel '(yellow dots curly hexagon) '(red stripes curved hexagon) 5)
+; (mendel '(yellow star curly ellipse) '(red stripes straight hexagon) 3)
 
-
-
-  
-; (show-butterfly 'red 'dots 'straight 'hexagon)
 
 ;; 2 --- Ein Vaterschaftstest (6 Zusatzpunkte)
-;drawButterflies
- ;  Input:
-;     - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
-  ;     der Mutter
-   ;  - dominante Merkmale (Musterung, Flügelfarbe, Fühlerform, Flügelform)
-    ;   des Vaters 
- ;  Aufgabe:
-  ;   - zeigt die Schmetterlinge an
