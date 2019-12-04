@@ -1,5 +1,8 @@
 #lang racket
 
+;; Blatt 6
+
+;; 1 --- Formen der Rekursion (10 Punkte)
 #|
 Endrekursion:
 Rekursive Funktionen, bei denen das Ergebnis der Rekursion nicht mehr mit anderen Termen
@@ -23,5 +26,9 @@ Direkte Rekursion:
 Indirekte Rekursion:
 Eine rekursive Definiton heißt indirekt oder verschränkt, wenn zwei oder mehrere Definitionen
 sich wechselseitig rekursiv verwenden.
-
 |#
+
+
+;; 2 --- Ihre Nikolausaufgabe (20 Punkte)
+;; 2.1 - Zusatzaufgabe 1 (5 Zusatzpunkte)
+;; 2.2 - Zusatzaufgabe 2 (5 Zusatzpunkte)
