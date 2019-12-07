@@ -1,4 +1,7 @@
 #lang racket
+(require 2htdp/image)
+(require lang/posn)
+(require 2htdp/universe)
 
 ;; Blatt 6
 
@@ -31,5 +34,130 @@ sich wechselseitig rekursiv verwenden.
 
 
 ;; 2 --- Ihre Nikolausaufgabe (20 Punkte)
+(define scene
+  ; definiert die Größe der Szene und die Hintergrundfarbe
+  (empty-scene 900 500 "midnightblue"))
+
+(define ground
+  ; Schneeboden
+  (crop/align "right" "top"
+              1000 200
+              (ellipse 1800 400 "solid" "aliceblue")))
+
+;Anzeigen:
+(place-image/align ground 0 500 "left" "bottom" scene)
+
+
+
+
+
+#|
+(color red green blue alpha) 0-255
+
+mode: "outline", "solid"
+   (circle radius mode color)
+   (ellipse width height mode color)
+(triangle side-length mode color)
+(right-triangle bottom-length left-side-length mode color)
+   (isosceles-triangle size angle mode color)
+(triangle/sss) - (triangle/saa) ...
+(square side-length mode color)
+   (rectangle width height mode color)
+   (rhombus height width mode color)
+   (star size mode color)
+(star-polygon size point-count mit-dem-wievielten-spike-verbinden mode color)
+   (radial-star point-count inner-radius outer-radius/size mode color)
+(regular-polygon size point-count mode color)
+   (pulled-regular-polygon size point-count pull angle mode color)
+   (polygon vertices(listofpoints) mode color)
+(add-polygon) ...
+(scene+polygon) ...
+
+(line x y color)
+(add-solid-curve) ...
+(text string font-size color)
+(text/font) ...
+
+x/y-place: "middle" "right" "left" "bottom" "top"
+(overlay image-oben image-unten ...)
+   (overlay/align x-place y-place image-oben image-unten ...)
+   (overlay/offset image-oben x-right y-down image-unten)
+(overlay/align/offset) ...
+   (overlay/xy image-oben x y image-unten)
+
+(beside) ...
+(above) ...
+
+(empty-scene width height color)
+(place-image image x y scene)
+(place-image/align x y x-place y-place scene/image)
+(place-images images-list posns-list scene)
+(place-images/align) ...
+
+(rotate angle image)
+(scale factor image)
+(scale/xy x-factor y-factor image) ;Verzerrung
+(flip-horizontal image)
+(flip-vertical image)
+(crop x y width height image)
+(crop/align x-place y-place width height image)
+|#
+
+
+
+
+
+
+
+
+
+
+
+#|
+(define  baum1 (above/align
+                "center"
+                ;; der  Stern  an der  Spitze
+                (star-polygon 40 5 2 "solid" "gold")
+                ;; die Zweige
+                (ellipse 20 40 "solid" "darkgreen")
+                (ellipse 80 50 "solid" "darkolivegreen")
+                (ellipse 130 60 "solid" "olivedrab")
+                (ellipse 180 80 "solid" "darkgreen")
+                ;; der Stamm
+                (rectangle 40 60 "solid" "brown")))
+|#
+
 ;; 2.1 - Zusatzaufgabe 1 (5 Zusatzpunkte)
 ;; 2.2 - Zusatzaufgabe 2 (5 Zusatzpunkte)
+#|
+(define  UFO
+  (underlay/align "center"
+                  "center"
+                  (circle  10 "solid" "green")
+                  (rectangle  40 4 "solid" "green")))
+
+(define  UFO-BEAM
+  (above/align "center"
+               (underlay/align "center" "center"
+                               (circle  10 "solid" "green")
+                               (rectangle  40 4 "solid" "green"))
+               (isosceles-triangle  100 20 "solid" "yellow")))
+
+(define (create-UFO-scene t)
+  (let (( height (* (sin (/ t 30))  50)))
+    (underlay/xy (rectangle  500 100 "solid" "white")
+                 (modulo t 500)  height
+                 (if (< 0 height) UFO  UFO-BEAM ))))
+
+(animate  create-UFO-scene)
+|#
+
+
+
+
+
+
+
+
+
+  
