@@ -44,6 +44,19 @@ sich wechselseitig rekursiv verwenden.
               1000 200
               (ellipse 1800 300 "solid" "whitesmoke")))
 
+(define (oneStar size)
+  ; ein Stern
+  (radial-star 8 2 size "solid" (color 255 255 153)))
+
+(define (stars n)
+  ; Sterne
+  (if (> n 0)
+      (underlay/offset
+       (oneStar (random 2 20))
+       (random 900) (random 500)
+       (stars (- n 1)))
+      (oneStar (random 2 20))))
+
 (define (tree size greenColor)
   ; Hintergrundbaum
   (if (> size 0)
@@ -79,12 +92,17 @@ sich wechselseitig rekursiv verwenden.
    0 10
    (pulled-regular-polygon 50 4 1/5 30 "solid" "sienna")))
 
+(define placeStars
+  ;platziert Hintergrundbäume in Szene
+  (place-image (stars 200)
+               900 400
+               scene))
 
 (define placeTrees
   ;platziert Hintergrundbäume in Szene
   (place-image (trees 100)
                (random 300 600) 300
-               scene))
+               placeStars))
 
 (define placeGround
   ;platziert Boden in Szene
@@ -103,7 +121,6 @@ sich wechselseitig rekursiv verwenden.
 
 ; erzeugt das Bild:
 placeChristmasTree
-
 
 
 
@@ -192,11 +209,6 @@ x/y-place: "middle" "right" "left" "bottom" "top"
 
 (animate  create-UFO-scene)
 |#
-
-
-
-
-
 
 
 
