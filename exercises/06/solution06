@@ -42,12 +42,40 @@ sich wechselseitig rekursiv verwenden.
   ; Schneeboden
   (crop/align "right" "top"
               1000 200
-              (ellipse 1800 400 "solid" "aliceblue")))
+              (ellipse 1800 300 "solid" "aliceblue")))
 
-;Anzeigen:
-(place-image/align ground 0 500 "left" "bottom" scene)
+(define (tree size greenColor)
+  ; Hintergrundbaum
+  (if (> size 0)
+      (overlay/align/offset "middle" "middle"
+                            (triangle size "solid" (color 0 greenColor 0))
+                            0 (* size -0.4)
+                            (tree (- size 15) greenColor))
+      (triangle 20 "solid" (color 0 0 0 0))))
+
+(define (trees number)
+  ; erzeugt Hintergrundbäume
+  (if (> number 1)
+      (overlay/offset
+        (tree (random 100 300) (random 50 100))
+        (random 600) 0
+        (trees (- number 1)))
+      (tree (random 100 300) (random 50 100))))
 
 
+
+
+
+; erzeugt das Bild:
+(place-image/align
+ ground 0 500 "left" "bottom"
+ (place-image (trees 100)
+              (random 300 600) 300
+              scene))
+
+
+
+;(pulled-regular-polygon 60 3 1/5 30 "solid" "blue")
 
 
 
@@ -113,19 +141,6 @@ x/y-place: "middle" "right" "left" "bottom" "top"
 
 
 
-#|
-(define  baum1 (above/align
-                "center"
-                ;; der  Stern  an der  Spitze
-                (star-polygon 40 5 2 "solid" "gold")
-                ;; die Zweige
-                (ellipse 20 40 "solid" "darkgreen")
-                (ellipse 80 50 "solid" "darkolivegreen")
-                (ellipse 130 60 "solid" "olivedrab")
-                (ellipse 180 80 "solid" "darkgreen")
-                ;; der Stamm
-                (rectangle 40 60 "solid" "brown")))
-|#
 
 ;; 2.1 - Zusatzaufgabe 1 (5 Zusatzpunkte)
 ;; 2.2 - Zusatzaufgabe 2 (5 Zusatzpunkte)
