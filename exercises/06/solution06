@@ -36,13 +36,13 @@ sich wechselseitig rekursiv verwenden.
 ;; 2 --- Ihre Nikolausaufgabe (20 Punkte)
 (define scene
   ; definiert die Größe der Szene und die Hintergrundfarbe
-  (empty-scene 900 500 "midnightblue"))
+  (empty-scene 900 500 (color 25 25 80)))
 
 (define ground
   ; Schneeboden
   (crop/align "right" "top"
               1000 200
-              (ellipse 1800 300 "solid" "aliceblue")))
+              (ellipse 1800 300 "solid" "whitesmoke")))
 
 (define (tree size greenColor)
   ; Hintergrundbaum
@@ -51,7 +51,7 @@ sich wechselseitig rekursiv verwenden.
                             (triangle size "solid" (color 0 greenColor 0))
                             0 (* size -0.4)
                             (tree (- size 15) greenColor))
-      (triangle 20 "solid" (color 0 0 0 0))))
+      (triangle 0 "solid" (color 0 greenColor 0))))
 
 (define (trees number)
   ; erzeugt Hintergrundbäume
@@ -62,20 +62,49 @@ sich wechselseitig rekursiv verwenden.
         (trees (- number 1)))
       (tree (random 100 300) (random 50 100))))
 
+(define (treeLeaves size)
+  ; erzeugt den Weihnachtsbaume ohne Stamm
+  (if (> size 0)
+      (underlay/align/offset "middle" "middle"
+                            (pulled-regular-polygon size 3 1/5 30 "solid" (color 34 160 34))
+                            0 (* size -0.4)
+                            (treeLeaves (- size 30)))
+      (star 25 "solid" "gold")))
+
+(define christmasTree
+  ; erzeugt Weihnachtsbaum mit Stamm
+  (overlay/align/offset
+   "middle" "bottom"
+   (treeLeaves 200)
+   0 10
+   (pulled-regular-polygon 50 4 1/5 30 "solid" "sienna")))
 
 
+(define placeTrees
+  ;platziert Hintergrundbäume in Szene
+  (place-image (trees 100)
+               (random 300 600) 300
+               scene))
+
+(define placeGround
+  ;platziert Boden in Szene
+  (place-image/align
+   ground
+   0 500 "left" "bottom"
+   placeTrees))
+
+(define placeChristmasTree
+  ;platziert Weihnachstsbaum in Szene
+  (place-image/align
+   christmasTree
+   200 275 "middle" "middle"
+   placeGround))
 
 
 ; erzeugt das Bild:
-(place-image/align
- ground 0 500 "left" "bottom"
- (place-image (trees 100)
-              (random 300 600) 300
-              scene))
+placeChristmasTree
 
 
-
-;(pulled-regular-polygon 60 3 1/5 30 "solid" "blue")
 
 
 
@@ -130,9 +159,6 @@ x/y-place: "middle" "right" "left" "bottom" "top"
 (crop x y width height image)
 (crop/align x-place y-place width height image)
 |#
-
-
-
 
 
 
