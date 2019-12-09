@@ -105,11 +105,11 @@ höherer Ordnung möglich ist.
 (define (createRecessiveFeatures dominant)
   ; ermittelt anhand der dominanten Merkmale und der Dominanzregeln
   ; zufällige rezessive Merkmale
-  (if (empty? dominant)
-      '()
-      (cons (car (shuffle (assoc (car dominant) dominanceRules)))
-            (createRecessiveFeatures (cdr dominant)))))
+  (map (lambda (feature)
+         (car (shuffle (assoc feature dominanceRules))))
+       dominant))
 
+  
 ; Zum Testen:
 ; (createRecessiveFeatures '(green dots straight hexagon))
 
@@ -126,34 +126,22 @@ höherer Ordnung möglich ist.
 (define (selectFeatures dominant recessive)
   ; wählt aus den dominanten und rezessiven Merkmalen zufällig jeweils eines
   ; der Merkmale aus
-  (if (empty? dominant)
-      '()
-      (cons (selectRandomFeature (car dominant) (car recessive))
-            (selectFeatures (cdr dominant) (cdr recessive)))))
+  (map (lambda (featureDominant featureRecessive)
+         (selectRandomFeature featureDominant featureRecessive))
+       dominant recessive))
 
 ; Zum Testen:
 ; (selectFeatures '(green dots straight ellipse) '(yellow stripes curly hexagon))
 
 
-(define (inList? x list)
-  ; Hilfsmethode für createChildFeatures:
-  ; prüft ob ein Element in einer Liste erhalten ist
-  (cond
-    [(empty? list) false]
-    [(equal? x (car list)) true]     
-    [else (inList? x (cdr list))]))
-
-
 (define (createChildFeatures mother father)
   ; ermittelt anhand zufälliger Merkmale der Eltern und der Dominanzregeln
   ; die sichtbaren dominanten Merkmale des Kindes
-  (if (empty? mother)
-      '()
-      (if (inList? (car mother) (assoc (car father) dominanceRules))
-          (cons (car father)
-                (createChildFeatures (cdr mother) (cdr father)))
-          (cons (car mother)
-                (createChildFeatures (cdr mother) (cdr father))))))
+  (map (lambda (motherFeature fatherFeature)
+         (if (member motherFeature (assoc fatherFeature dominanceRules))
+             fatherFeature
+             motherFeature))
+       mother father))
 
 ; Zum Testen:
 ; (createChildFeatures '(yellow dots curly hexagon) '(red stripes curved hexagon))
