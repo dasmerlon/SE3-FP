@@ -120,6 +120,4 @@ sich wechselseitig rekursiv verwenden.
 ; erzeugt das Bild:
 createScene
 
-
-
 ;; Zusatzaufgabe: Animation (Schneefall?)
