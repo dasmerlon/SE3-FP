@@ -3,6 +3,33 @@
 ;; Blatt 7
 
 ;; 1 --- Abbilden (10 Punkte)
+(define (zaehlen1 x xs (zaehler 0)) 
+  ; als allgemein rekursive Funktion (linear)
+   (if (empty? xs)
+      zaehler
+      (if (equal? x (car xs))
+      (zaehlen1 x (cdr xs) (add1 zaehler))
+      (zaehlen1 x (cdr xs) zaehler))))
+ 
+
+;(define (zaehlen2 x xs)
+  ; als endrekursive Funktion
+  ;)
+
+(define (zaehlen3 x xs)
+  ; mittels geeigneter Funktionen höherer Ordnung
+  (foldl (lambda (element zaehler)
+           (if (equal? x element)
+               (add1 zaehler)
+               zaehler))
+         0 xs))
+
+
+
+(zaehlen1 3 '(1 4 3 2 3 4 3))
+;(zaehlen2 3 '(1 4 3 2 3 4 3))
+(zaehlen3 3 '(1 4 3 2 3 4 3))
+
 
 ;; 2 --- Das Spiel des Lebens
 ;; 2.1 - Modellierung des Spielzustands (5 Punkte)
