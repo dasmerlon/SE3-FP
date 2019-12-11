@@ -2,6 +2,34 @@
 (require 2htdp/image)
 (require 2htdp/universe)
 
+;; Blatt 6
+
+;; 1 --- Formen der Rekursion (10 Punkte)
+#|
+Endrekursion:
+Rekursive Funktionen, bei denen das Ergebnis der Rekursion nicht mehr mit anderen Termen
+verknüpft werden muß, heißen endrekursiv (engl. tail-recursion).
+Die zugehörigen Prozesse heißen iterative Prozesse.
+
+Lineare Rekursion:
+Eine Funktionsdefinition, die sich auf der rechten Seite der definierenden Gleichung in jeder
+Fallunterscheidung selbst nur einmal verwendet, heißt Rekursion: linear-rekursiv
+
+Baumartige Rekursion:
+Eine rekursive Definition ist baumartig, wenn in der Definition in einer Fallunterscheidung
+mehrfach auf die Definition Bezug genommen wird.
+
+Geschachtelte Rekursion:
+Eine Rekursion ist geschachtelt, wenn die Funktion in der rekursiven Verwendung selbst als
+Argument mitgegeben wird.
+
+Direkte Rekursion:
+Eine Methode heißt direkt rekursiv, wenn der erneute Aufruf im Methodenrumpf der Methode erfolgt.
+
+Indirekte Rekursion:
+Eine rekursive Definiton heißt indirekt oder verschränkt, wenn zwei oder mehrere Definitionen
+sich wechselseitig rekursiv verwenden.
+|#
 
 
 ;; 2 --- Ihre Nikolausaufgabe (20 Punkte)
