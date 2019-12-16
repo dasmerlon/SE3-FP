@@ -36,7 +36,6 @@
 
 ;; 2 --- Das Spiel des Lebens
 #|
-
 Anfangszustand setzen
 Folgezustand anhand der Regel von Game of Life:
 - Eine tote Zelle mit genau drei lebenden Nachbarn wird (neu) geboren
@@ -50,21 +49,17 @@ Map und List-ref?
 
 30x30 Spielfeld mit jedem Quadrat 10 x 10 pixel
 tote Zelle unausgefülltes Quadrat
-llebende Zelle ausgefülltes Quadrat
-
+lebende Zelle ausgefülltes Quadrat
 |#
 
 #|
-Teilprobleme
+TEILPROBLEME:
 Spielfeld erstellen 
 anhand der gegebenen Regeln den Zustand einer Zelle bestimmen
 Zustände der Zellen im Spielfeld setzten
 animieren des Spielfelds mit den Zellen
 
-
-
-
-Gliederung
+GLIEDERUNG:
 
 1. startCond
    Input:
@@ -105,13 +100,79 @@ Gliederung
     - animiert das Spiel mit aufeinanderfolgenden Images des Spiels
    Output:
     -
-
-Datenstruktur:
-?
 |#
-;; 2.1 - Modellierung des Spielzustands (5 Punkte)
 
+
+;; 2.1 - Modellierung des Spielzustands (5 Punkte)
+#|
+Mögliche Datenstrukturen:
+
+1. Eine Liste mit N Listen:
+   - Jede Unterliste repräsentiert eine Zeile, in der jedes Element eine Zelle darstellt.
+2. Ein Vektor mit N Vektoren:
+   - Jeder Untervektor repräsentiert eine Zeile.
+
+Wir wählen die 2. Variante, da man auf die Elemente eines Vektors direkt zugreifen
+kann und nicht durch die Liste durchgehen muss. Dadruch hat man einen schnelleren
+Zugriff auf ein Element, was zum Vorteil ist, da wir immer eine bestimmte Zelle
+betrachten wollen. Jedes Element enhält einen booleschen Wert:
+#t für eine lebendige Zelle und #f für eine tote Zelle.
+|#
+
+(define startCond
+  ; Datenstruktur, welchen den Anfangszustand abbildet
+  ;   01 02 03 04 05 06 07 08 09 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+  #(#(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;01
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;02
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;03
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;04
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;05
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;06
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;07
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;08
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;09
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;10
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;11
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;12
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;13
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;14
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;15
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;16
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;17
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;18
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;19
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;20
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;21
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;22
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;23
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;24
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;25
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;26
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;27
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;28
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;29
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f))) ;30
+    
+    
 ;; 2.2 - Visualisierung des Spielzustands (5 Punkte)
+(define (createCell cell)
+  ; erzeugt eine lebendige, bzw. tote Zelle
+  (let ([style (if cell
+                   "solid"
+                   "outline")])
+    (square 10 style "black")))
+
+(define (createRow row)
+  ; erzeugt eine Reihe von Zellen
+  (let ([cellList (vector->list (vector-map createCell row))])
+    (apply beside cellList)))
+        
+(define (createGame game)
+  ; erzeugt das Spielfeld
+  (let ([rowList (vector->list (vector-map createRow game))])
+    (apply above rowList)))
+
+(createGame startCond)
 
 ;; 2.3 - Spiellogik und Tests (15 Punkte)
 
