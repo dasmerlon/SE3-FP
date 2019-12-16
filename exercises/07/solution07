@@ -1,4 +1,6 @@
 #lang racket
+(require 2htdp/image)
+(require 2htdp/universe)
 
 ;; Blatt 7
 
@@ -26,14 +28,18 @@
 
 
 
-(zaehlen1 3 '(1 4 3 2 3 4 3))
+;(zaehlen1 3 '(1 4 3 2 3 4 3))
 ;(zaehlen2 3 '(1 4 3 2 3 4 3))
-(zaehlen3 3 '(1 4 3 2 3 4 3))
+;(zaehlen3 3 '(1 4 3 2 3 4 3))
 
 
 ;; 2 --- Das Spiel des Lebens
 ;; 2.1 - Modellierung des Spielzustands (5 Punkte)
+
 ;; 2.2 - Visualisierung des Spielzustands (5 Punkte)
+
 ;; 2.3 - Spiellogik und Tests (15 Punkte)
+
 ;; 2.4 - Simulation (5 Punkte)
+
 ;; 2.5 - Zusatzaufgabe: Spielfeldrand (5 Zusatzspunkte)
