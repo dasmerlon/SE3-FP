@@ -5,18 +5,21 @@
 ;; Blatt 7
 
 ;; 1 --- Abbilden (10 Punkte)
-(define (zaehlen1 x xs (zaehler 0)) 
-  ; als allgemein rekursive Funktion (linear)
+(define (zaehlen1 x xs) 
+  ; als allgemein rekursive Funktion
+   (if (empty? xs)
+      0
+      (if (equal? (car xs) x)
+          (+ 1 (zaehlen1 x (cdr xs)))
+          (zaehlen1 x (cdr xs)))))
+
+(define (zaehlen2 x xs (zaehler 0)) 
+  ; als endrekursive Funktion
    (if (empty? xs)
       zaehler
       (if (equal? x (car xs))
-      (zaehlen1 x (cdr xs) (add1 zaehler))
-      (zaehlen1 x (cdr xs) zaehler))))
- 
-
-;(define (zaehlen2 x xs)
-  ; als endrekursive Funktion
-  ;)
+      (zaehlen2 x (cdr xs) (add1 zaehler))
+      (zaehlen2 x (cdr xs) zaehler))))
 
 (define (zaehlen3 x xs)
   ; mittels geeigneter Funktionen höherer Ordnung
@@ -25,8 +28,6 @@
                (add1 zaehler)
                zaehler))
          0 xs))
-
-
 
 ;(zaehlen1 3 '(1 4 3 2 3 4 3))
 ;(zaehlen2 3 '(1 4 3 2 3 4 3))
