@@ -13,6 +13,7 @@
           (+ 1 (zaehlen1 x (cdr xs)))
           (zaehlen1 x (cdr xs)))))
 
+
 (define (zaehlen2 x xs (zaehler 0)) 
   ; als endrekursive Funktion
    (if (empty? xs)
@@ -20,6 +21,7 @@
       (if (equal? x (car xs))
       (zaehlen2 x (cdr xs) (add1 zaehler))
       (zaehlen2 x (cdr xs) zaehler))))
+
 
 (define (zaehlen3 x xs)
   ; mittels geeigneter Funktionen höherer Ordnung
@@ -151,38 +153,92 @@ betrachten wollen. Jedes Element enhält einen booleschen Wert:
     #(#f #f #f #f #f #f #f #t #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;26
     #(#f #f #f #f #f #f #f #t #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;27
     #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)   ;28
-    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f)))   ;29
- 
+    #(#f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f #f))) ;29
     
     
 ;; 2.2 - Visualisierung des Spielzustands (5 Punkte)
-(define (createCell cell)
+(define (drawCell cell)
   ; erzeugt eine lebendige, bzw. tote Zelle
   (let ([style (if cell
                    "solid"
                    "outline")])
     (square 10 style "black")))
 
-(define (createRow row)
+
+(define (drawRow row)
   ; erzeugt eine Reihe von Zellen
-  (let ([cellList (vector->list (vector-map createCell row))])
+  (let ([cellList (vector->list (vector-map drawCell row))])
     (apply beside cellList)))
-        
-(define (createGame game)
+
+
+(define (drawGame game)
   ; erzeugt das Spielfeld
-  (let ([rowList (vector->list (vector-map createRow game))])
+  (let ([rowList (vector->list (vector-map drawRow game))])
     (apply above rowList)))
 
-(createGame startCond)
+(drawGame startCond)
 
 
 ;; 2.3 - Spiellogik und Tests (15 Punkte)
-;(define (createNeighbors x y)
+(define (getCell game x y)
+  ; gibt den Status einer Zelle an einer bestimmten Position wieder
+  (let ([row (vector-ref game y)]) ;y. Zeile
+    (vector-ref row x))) ;x. Spalte
 
+; zum Testen:
+; (getCell startCond 15 2)  ;#t
+; (getCell startCond 20 10) ;#f
 
-
-
-;; 2.4 - Simulation (5 Punkte)
 
 ;; 2.5 - Zusatzaufgabe: Spielfeldrand (5 Zusatzspunkte)
+(define (getNeighbors game x y)
+  ; bestimmt die 8 Nachbarn von einer Zelle an der Position x y.
+  (let ([x+1 (modulo (+ x 1) 30)]          ;rechts
+        [x-1 (modulo (- (+ x 30) 1) 30)]   ;links
+        [y+1 (modulo (+ y 1) 30)]          ;unten
+        [y-1 (modulo (- (+ y 30) 1) 30)])  ;oben
+    (vector (getCell game x-1 y-1)
+            (getCell game x-1 y)
+            (getCell game x-1 y+1)
+            (getCell game x y-1)
+            (getCell game x y+1)
+            (getCell game x+1 y-1)
+            (getCell game x+1 y)
+            (getCell game x+1 y+1))))
 
+; zum Testen:
+; (getNeighbors startCond 15 2)
+
+
+(define (newCellCond game x y)
+  ; bestimmt den Folgezustand einer Zelle anhand ihrer Nachbarn.
+  (let* ([neighbors (getNeighbors game x y)]
+         [livingNeighbors (- 8 (vector-count false? neighbors))])
+    (cond
+      [(= livingNeighbors 3) #t]
+      [(< livingNeighbors 2) #f]
+      [(> livingNeighbors 3) #f]
+      [else (getCell game x y)])))
+      
+; zum Testen:
+; (newCellCond startCond 15 2)
+
+
+(define (newGameCond game)
+  ; ermittelt den neuen Spielzustand
+  (let ([newRow (lambda (y)
+                  (list->vector
+                   (map (lambda (x)
+                          (newCellCond game x y))
+                        (range 0 30))))])
+    (list->vector (map newRow (range 0 30)))))
+
+; zum Testen:
+; (drawGame (newGameCond startCond))
+
+  
+;; 2.4 - Simulation (5 Punkte)
+(big-bang startCond
+  ; simuliert das Spiel des Lebens mit 4 Zustandsübergängen pro Sekunde
+          (to-draw drawGame)
+          (on-tick newGameCond 0.2))  ;eigentlich 0.25 für 4 Übergänge pro Sekunde)
