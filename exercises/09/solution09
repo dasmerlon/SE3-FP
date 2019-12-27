@@ -1,0 +1,34 @@
+#lang racket
+
+;; Blatt 9
+
+#|
+Ergänzung zu Aufgabenblatt 9: Methodenkombination*
+
+Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für string-append:
+
+#lang swindle
+; ein Beispiel für eine selbstdefinierte Methodenkombination string-append-combination
+(define* string-append-combination
+  (make-generic-combination
+   :process-result
+   (lambda (s)
+     (apply string-append s)
+     )
+   )
+  )
+
+; ein Beispiel für die Verwendung der neuen Kombination
+(defgeneric cite ((publication))
+  :combination string-append-combination)
+|#
+
+;; 1 --- CLOS und generische Funktionen
+;; 1.1 - Definition von Klassen (10 Punkte)
+;; 1.2 - Generische Funktionen und Methoden (5 Punkte)
+;; 1.3 - Ergänzungsmethoden (5 Punkte)
+
+;; 2 --- CLOS und Vererbung
+;; 2.1 - Definition von Klassen (5 Punkte)
+;; 2.2 - Operationen und Methodenkombination (5 Punkte)
+;; 2.3 - Klassenpräzedenz bei Mehrfachvererbung (10 Punkte)

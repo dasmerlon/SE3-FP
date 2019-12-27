@@ -1,0 +1,13 @@
+#lang racket
+
+;; Blatt 8
+
+;; 1 --- Funktionen höherer Ordnung und Closures (10 Punkte)
+
+;; 2 --- Einfache funktionale Ausdrücke höherer Ordnung (6 Punkte)
+
+;; 3 --- Spieltheorie: Das Kartenspiel SET! 
+;; 3.1 - (4 Punkte)
+;; 3.2 - (10 Punkte)
+;; 3.3 - (10 Punkte)
+;; 3.4 - (7 Zusatzpunkte)
