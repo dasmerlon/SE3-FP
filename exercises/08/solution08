@@ -48,21 +48,28 @@
 ; Die Zahlen 1 und 3 definieren die Umgebung. 
 
 
-
 ;; 1.4 Zu welchem Wert evaluieren die folgenden Ausdrücke?
 ;(foldl (curry + 3) 1 '(2 3 5))
-;20
+; -> 20
+; Zunächst wird (curry + 3) zu einer Closure aufgelöst, die sich wie x+3 verhält.
+; Dann wird foldl ausgeführt und verwendet die Elemente der Liste als Argumente für die
+; Closure. 1 wird als letztes Argument verwendet.
+; Also: 2+3 + 3+3 + 5+3 + 1 = 20
 
 ;(map even? '(4 587 74 69 969 97 459 4))
-;'(#t #f #t #f #f #f #f #t)
+; -> '(#t #f #t #f #f #f #f #t)
+; Die Funktion map wendet eine Funktion (in diesem Fall even?) auf jedes Element
+; der Liste an und gibt als Resultat eine Liste der abgebildeten Werte zurück. 
 
 ;(filter number? '(#f (2) 3 (()) 4 -7 "c"))
-;(3 4 -7)
+; -> '(3 4 -7)
+; Die Funktion filter nimmt ein Prädikat (in diesem Fall number?) und eine Liste als
+; Element und bildet eine Teillisten aller Elemente, die das Prädikat erfüllen.
 
 ;((curry filter (compose test-vergleich
 ;                        (curry ermittle-vergleichsoperation 11)))
 ; '(5682 48 24915 -45 -6 48 11))
-;'(-45 -6)
+; -> '(-45 -6)
 
 
 ;; 2 --- Einfache funktionale Ausdrücke höherer Ordnung (6 Punkte)
