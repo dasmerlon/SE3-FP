@@ -76,31 +76,47 @@
 (define xs '(1 -2 34 12 -7 5 5))
 
 ;; 2.1 Liste der Quadrierungen aller Zahlen
-(map (curryr expt 2) xs)
+;(map (curryr expt 2) xs)
+
 
 ;; 2.2 Teilliste aller glatt durch 3 oder 7 teilbaren Zahlen
-(filter (lambda (x)
-          (or (= 0 (modulo x 3))
-              (= 0 (modulo x 7))))
-        xs)
+(define (div3or7 x)
+  (filter (lambda (a)
+            (or (= 0 (modulo a 3))
+                (= 0 (modulo a 7))))
+          x))
 
+;(div3or7 xs)
+
+  
 ;; 2.3 Summe der geraden Zahlen größer 6 in xs
-(foldl + 0
-       (filter (lambda (x)
-                 (and (even? x)
-                      (> x 6)))
-               xs))
+(define (sum>6 x)
+  (foldl + 0
+         (filter (lambda (a)
+                   (and (even? a)
+                        (> a 6)))
+                 x)))
+
+;(sum>6 xs)
+
 
 ;; 2.4 Aufspaltung in zwei Teillisten anhand eines Prädikats (3 Zusatzpunkte) s
 (define (split f x) 
   (list (filter f x) 
         (filter (compose not f) x)))
 
-(split odd? xs)
+;(split odd? xs)
 
 
 ;; 3 --- Spieltheorie: Das Kartenspiel SET! 
 ;; 3.1 - (4 Punkte)
+(define pattern '('oval 'rectangle 'waves))
+(define color '('red 'blue 'green))
+(define number '(1 2 3))
+(define mode '('outline 'hatched 'solid))
+
+(define card '(number pattern mode color))
+
 ;; 3.2 - (10 Punkte)
 ;; 3.3 - (10 Punkte)
 ;; 3.4 - (7 Zusatzpunkte)
