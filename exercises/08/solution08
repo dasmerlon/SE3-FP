@@ -67,8 +67,8 @@
 ; Element und bildet eine Teillisten aller Elemente, die das Prädikat erfüllen.
 
 ;((curry filter (compose test-vergleich
-;                        (curry ermittle-vergleichsoperation 11)))
-; '(5682 48 24915 -45 -6 48 11))
+;                        (curry ermittle-vergleichsoperation 11))
+; '(5682 48 24915 -45 -6 48 11)))
 ; -> '(-45 -6)
 
 
@@ -110,13 +110,64 @@
 
 ;; 3 --- Spieltheorie: Das Kartenspiel SET! 
 ;; 3.1 - (4 Punkte)
-(define pattern '('oval 'rectangle 'waves))
-(define color '('red 'blue 'green))
-(define number '(1 2 3))
-(define mode '('outline 'hatched 'solid))
+(define pattern
+  ; definiert mögliche Formen der Symbole auf einer Spielkarte
+  '(oval rectangle waves))
 
-(define card '(number pattern mode color))
+(define color
+  ; definiert mögliche Farben der Symbole auf einer Spielkarte
+  '(red blue green))
+
+(define number
+  ; definiert die mögliche Anzahl der Symbole auf einer Spielkarte
+  '(1 2 3))
+
+(define mode
+  ; definiert mögliche Füllungen der Symbole auf einer Spielkarte
+  '(outline hatched solid))
+
+(define card
+  ; definiert die Eigenschaften einer Spielkarte
+  '(number pattern mode color))
+
 
 ;; 3.2 - (10 Punkte)
+(define (modeColorList n p)
+  ; Hilfsfunktion:
+  ; Erzeugt eine Liste mit allen möglichen Kombinationen von Füllungen und Farben
+  (foldl append '()
+         (map (lambda (m)
+                (map (lambda (c)
+                       (((curry list) n p) m c))
+                     color))
+              mode)))
+
+(define createAllCards
+  ; erzeugt eine Liste aller 81 Spielkarten
+  (let ([attributes (foldl append '()
+                           (map (lambda (n)
+                                  (map (lambda (p)
+                                         (modeColorList n p))
+                                       pattern))
+                                number))])
+    (foldl append '() attributes)))
+
+; Zum Testen:
+;createAllCards
+;(length createAllCards)
+
+
+(define (showCard card)
+  ; zeigt eine einzelne Spielkarte an
+  (apply show-set-card card))
+
+(define (showCards cards)
+  ; zeigt mehrere Spielkarten in einer Liste an
+   (map showCard cards))
+
+; Zum Testen:
+;(showCards createAllCards)
+
+
 ;; 3.3 - (10 Punkte)
 ;; 3.4 - (7 Zusatzpunkte)
