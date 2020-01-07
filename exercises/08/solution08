@@ -134,11 +134,11 @@
 ;; 3.2 - (10 Punkte)
 (define (modeColorList n p)
   ; Hilfsfunktion:
-  ; Erzeugt eine Liste mit allen möglichen Kombinationen von Füllungen und Farben
+  ; erzeugt eine Liste mit allen möglichen Kombinationen von Füllungen und Farben
   (foldl append '()
          (map (lambda (m)
                 (map (lambda (c)
-                       (((curry list) n p) m c))
+                       (list n p m c))
                      color))
               mode)))
 
@@ -157,17 +157,93 @@
 ;(length createAllCards)
 
 
-(define (showCard card)
+(define (drawCard card)
   ; zeigt eine einzelne Spielkarte an
   (apply show-set-card card))
 
-(define (showCards cards)
+(define (drawCards cards)
   ; zeigt mehrere Spielkarten in einer Liste an
-   (map showCard cards))
+   (map drawCard cards))
 
 ; Zum Testen:
-;(showCards createAllCards)
+;(drawCards createAllCards)
 
 
 ;; 3.3 - (10 Punkte)
+; Testdaten:
+(define testCards1
+  '((2 oval hatched red)
+    (2 rectangle hatched red)
+    (2 waves hatched red)))
+
+(define testCards2
+  '((2 rectangle hatched red)
+    (2 rectangle outline green)
+    (1 rectangle solid green)))   
+
+(define testCards3
+  '((1 oval hatched red)
+    (2 rectangle outline blue)
+    (3 waves solid green)))
+
+
+(define (createAttributeList cards)
+  ; Hilfsmethode:
+  ; erstellt aus 3 Karten eine Liste mit Listen der jeweils gleichen Attribute
+  (map (lambda (x y z)
+         (list x y z))
+       (car cards)
+       (cadr cards)
+       (caddr cards)))
+
+; Zum Testen:
+;(createAttributeList testCards1)
+;(createAttributeList testCards2)
+;(createAttributeList testCards3)
+
+
+(define (all-different? attributes)
+  ; Hilfsmethode:
+  ; gibt True zurück, wenn alle Eigenschaften unterschiedlich sind
+  (false? (check-duplicates attributes)))
+
+
+(define (all-the-same? attributes)
+  ; Hilfsmethode:
+  ; prüft ob 3 Eigenschaften gleich sind
+  (if (equal? (car attributes) (cadr attributes))
+      (if (equal? (car attributes) (caddr attributes))
+          #t
+          #f)
+      #f))
+
+
+(define (is-a-set? cards)
+  ; bestimmt für 3 Spielkarten, ob es sich um ein SET handelt oder nicht
+  (let* ([attributeList (createAttributeList cards)]
+         [differentList (map (lambda (x)
+                            (all-different? x))
+                          attributeList)]
+         [sameList (map (lambda (x)
+                       (all-the-same? x))
+                     attributeList)]
+         [combinedList (map (lambda (x y)
+                              (or x y))
+                            sameList
+                            differentList)]
+         [true? (compose not false?)])    
+    (andmap true? combinedList)))
+
+; Zum Testen:
+#|
+(drawCards testCards1)
+(is-a-set? testCards1) ; #t
+(drawCards testCards2)
+(is-a-set? testCards2) ; #f
+(drawCards testCards3)
+(is-a-set? testCards3) ; #t
+|#
+
+
 ;; 3.4 - (7 Zusatzpunkte)
+
