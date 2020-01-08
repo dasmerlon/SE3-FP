@@ -100,7 +100,7 @@
 ;(sum>6 xs)
 
 
-;; 2.4 Aufspaltung in zwei Teillisten anhand eines Prädikats (3 Zusatzpunkte) s
+;; 2.4 Aufspaltung in zwei Teillisten anhand eines Prädikats (3 Zusatzpunkte) 
 (define (split f x) 
   (list (filter f x) 
         (filter (compose not f) x)))
@@ -232,7 +232,9 @@
                             sameList
                             differentList)]
          [true? (compose not false?)])    
-    (andmap true? combinedList)))
+    (if (= 3 (length cards))
+        (andmap true? combinedList)
+        #f)))
 
 ; Zum Testen:
 #|
