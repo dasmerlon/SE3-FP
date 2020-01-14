@@ -34,7 +34,7 @@
 (define (ermittle-vergleichsoperation x y)
   (cond [(< x y) <]
         [(> x y) >]
-        [(- x y) -]))
+        [(= x y) =]))
 
 ; (e) Funktion höherer Ordnung, da sie eine Funktion als Argument erwartet.
 (define (schweinchen-in-der-mitte f arg1)
@@ -70,6 +70,15 @@
 ;                        (curry ermittle-vergleichsoperation 11))
 ; '(5682 48 24915 -45 -6 48 11)))
 ; -> '(-45 -6)
+; (curry ermittle-vergleichsoperation 11) wird zu einer Closure aufgelöst.
+; ermittle-vergleichsoperation braucht 2 Parameter (x y). 11 wird für x übergeben,
+; das Argument für y wird nach und nach aus der Liste entnommen.
+; '(< < < > > < =)
+; compose (testvergleich)
+;-> (lambda (a) (test-vergleich (ermittle-vergleichsoperation 11 a)))
+;-> '(#f #f #f #t #t #f #f)
+; filter -> (#t #t) -> (-45 -6)
+; curry bräuchte man nicht
 
 
 ;; 2 --- Einfache funktionale Ausdrücke höherer Ordnung (6 Punkte)
@@ -131,7 +140,7 @@
   '(number pattern mode color))
 
 
-;; 3.2 - (10 Punkte)
+;; 3.2 - (10 Punkte)     ; cartesian-product 
 (define (modeColorList n p)
   ; Hilfsfunktion:
   ; erzeugt eine Liste mit allen möglichen Kombinationen von Füllungen und Farben
@@ -195,6 +204,7 @@
        (car cards)
        (cadr cards)
        (caddr cards)))
+;(apply (curry map list) list)
 
 ; Zum Testen:
 ;(createAttributeList testCards1)
@@ -217,6 +227,8 @@
           #f)
       #f))
 
+;(apply =)
+
 
 (define (is-a-set? cards)
   ; bestimmt für 3 Spielkarten, ob es sich um ein SET handelt oder nicht
@@ -237,14 +249,14 @@
         #f)))
 
 ; Zum Testen:
-#|
+
 (drawCards testCards1)
 (is-a-set? testCards1) ; #t
 (drawCards testCards2)
 (is-a-set? testCards2) ; #f
 (drawCards testCards3)
 (is-a-set? testCards3) ; #t
-|#
+
 
 
 ;; 3.4 - (7 Zusatzpunkte)

@@ -1,0 +1,11 @@
+#lang racket
+
+;; Blatt 11
+
+;; 1 --- Prolog in Racket
+;; 1.1 - Unifikation (10 Punkte)
+;; 1.2 - Anfragen (10 Punkte)
+
+;; 2 --- Memo-Funktionen (5 Punkte)
+
+;; 3 --- Stromorientierte Programmierung (10 Punkte)
