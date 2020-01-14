@@ -240,21 +240,21 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 ; da sie die Reihenfolge bestimmt, in der die Methoden angewandt werden
 
 ; Amphibientier
-;(display (getLebensraum (make amphibie)))
+;(displayln (getLebensraum (make amphibie)))
 ; Für das Amphibientier wurde in der Vererbung festgelegt, dass das
 ; Wassertier wichtiger ist als das Landtier, somit ist die
 ; Präzedenzliste in der Reihenfolge amphibie, wassertier, landtier, tier
 ; und die sich ergebende Ausgabe '(wasser land)
 
 ; Libellentier
-;(display (getLebensraum (make libelle)))
+;(displayln (getLebensraum (make libelle)))
 ; Für das Libellentier wurde festgelegt, dass das Lufttier wichtiger ist
 ; als das Amphibientier, somit steht das Lufttier vor dem
 ; Amphibientier in der Präzedenzliste. Es ergibt sich also die
 ; Liste '(luft wasser land) als Ergebnis
 
 ; flugfähige Landtier
-;(display (getLebensraum (make flug-landtier)))
+;(displayln (getLebensraum (make flug-landtier)))
 ; Das Ergebnis ist '(saxicolous land luft)
 ; Da die Präzedenzliste die Reihenfolge flug-landtier, saxicolous, landtier,
 ; lufttier, tier hat.
@@ -263,8 +263,53 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 ; (Anhand des Nachlagerns von Landtier gegenüber dem Saxicolous)
 
 ; fliegende Fantasie-Fisch
-;(display (getLebensraum (make fantasie-fisch)))
+;(displayln (getLebensraum (make fantasie-fisch)))
 ; '(wasser luft)
 ; Die Reihenfolge auf der Präzedenzliste ist fantasie-fisch, meerestier, lufttier, tier.
 ; Somit werden sie in dieser Reihenfolge abgearbeitet und die Ergebnisse auf
 ; die Liste gepackt.
+
+
+
+; Gewählt wurde die Wiedergabe der Gefährlichkeit
+(defmethod getGefaehrlichkeit ((m meerestier))
+  50)
+(defmethod getGefaehrlichkeit ((l lufttier))
+  10)
+(defmethod getGefaehrlichkeit ((a arboreal))
+  30)
+(defmethod getGefaehrlichkeit ((s saxicolous))
+  20)
+(defmethod getGefaehrlichkeit ((a arenicolous))
+  60)
+(defmethod getGefaehrlichkeit ((t troglofauna))
+  80)
+
+
+; Die Klassenpräzedenzliste ist hierbei unerlässlich,
+; da sie die Reihenfolge bestimmt, in der die Methoden angewandt werden
+
+; Amphibientier
+(displayln (getGefaehrlichkeit (make amphibie)))
+; 50
+; Die Präzedenzliste in der Reihenfolge amphibie, meerestier, landtier, tier
+; Da Landtier und Tier keine Methode anbieten für getGefaehrlichkeit: '(50) 
+
+; Libellentier
+(displayln (getGefaehrlichkeit (make libelle)))
+; 50
+; Präzedenzliste: libelle, Lufttier, amphibie, meerestier, landtier, tier.
+; '(10 50)
+
+; flugfähige Landtier
+(displayln (getGefaehrlichkeit (make flug-landtier)))
+; 20
+; Da die Präzedenzliste die Reihenfolge flug-landtier, saxicolous, landtier,
+; lufttier, tier hat.
+; '(20 10)
+
+; fliegende Fantasie-Fisch
+(displayln (getGefaehrlichkeit (make fantasie-fisch)))
+; 50
+; Die Reihenfolge auf der Präzedenzliste ist fantasie-fisch, meerestier, lufttier, tier.
+; '(50 10)
