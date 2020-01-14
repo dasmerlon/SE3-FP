@@ -158,7 +158,6 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
         :month "Juni"))
 
 
-
 ;; 1.2 - Generische Funktionen und Methoden (5 Punkte)
 ;; 1.3 - Ergänzungsmethoden (5 Punkte)
 
@@ -182,14 +181,90 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 (defclass lufttier (tier))
 
 ;; 2.1.2
-(defclass amphibie (meerestier lufttier))
+(defclass amphibie (meerestier landtier))
 
-(defclass libelle (landtier amphibie))
+(defclass libelle (lufttier amphibie))
 
-(defclass flug-landtier (landtier lufttier))
+(defclass flug-landtier (saxicolous lufttier))
 
 (defclass fantasie-fisch (meerestier lufttier))
 
 
 ;; 2.2 - Operationen und Methodenkombination (5 Punkte)
+
+; Da jeder Lebensraum interessant ist, in dem sich das Tier bewegen kann,
+; sollte hierbei eine Kombination genutzt werden. Die zurückgegebenen Werte
+; werden auf eine Liste gesetzt.
+(defgeneric getLebensraum ((t tier))
+  :combination generic-list-combination)
+
+; Da hier die Maximalgeschwindigkeit gefragt ist, nutzen wir die generic-max-combination
+(defgeneric getMaxGeschwindigkeit ((t tier))
+  :combination generic-max-combination)
+
+; Da hier die Maximalgefährlichkeit wichtig für das Wohlbefinden des Menschen ist,
+; nutzen wir die generic-max-combination
+(defgeneric getGefaehrlichkeit ((t tier))
+  :combination generic-max-combination)
+
+; Da der Verbrauch an Nahrung abhängig von dem Lebensraum und der Umgebung der
+; sportlichen Aktivität ist, ist die + Kombination am sinnvollsten, denn man kennt es ja:
+; "Wenn ich schwimme und jogge, muss ich mehr essen, als wenn ich nur jogge."
+(defgeneric getVerbrauch ((t tier))
+  :combination generic-+-combination)
+
+; Wir erwarten das worst-case-Scenario: Das Tier stirbt früher.
+(defgeneric getLebenserwartung ((t tier))
+  :combination generic-min-combination)
+
+
 ;; 2.3 - Klassenpräzedenz bei Mehrfachvererbung (10 Punkte)
+; Gewählt wurde die Wiedergabe des Lebensraums
+(defmethod getLebensraum ((l landtier))
+  'land)
+(defmethod getLebensraum ((m meerestier))
+  'wasser)
+(defmethod getLebensraum ((l lufttier))
+  'luft)
+(defmethod getLebensraum ((a arboreal))
+  'arboreal)
+(defmethod getLebensraum ((s saxicolous))
+  'saxicolous)
+(defmethod getLebensraum ((a arenicolous))
+  'arenicolous)
+(defmethod getLebensraum ((t troglofauna))
+  'troglofauna)
+
+
+; Die Klassenpräzedenzliste ist hierbei unerlässlich,
+; da sie die Reihenfolge bestimmt, in der die Methoden angewandt werden
+
+; Amphibientier
+;(display (getLebensraum (make amphibie)))
+; Für das Amphibientier wurde in der Vererbung festgelegt, dass das
+; Wassertier wichtiger ist als das Landtier, somit ist die
+; Präzedenzliste in der Reihenfolge amphibie, wassertier, landtier, tier
+; und die sich ergebende Ausgabe '(wasser land)
+
+; Libellentier
+;(display (getLebensraum (make libelle)))
+; Für das Libellentier wurde festgelegt, dass das Lufttier wichtiger ist
+; als das Amphibientier, somit steht das Lufttier vor dem
+; Amphibientier in der Präzedenzliste. Es ergibt sich also die
+; Liste '(luft wasser land) als Ergebnis
+
+; flugfähige Landtier
+;(display (getLebensraum (make flug-landtier)))
+; Das Ergebnis ist '(saxicolous land luft)
+; Da die Präzedenzliste die Reihenfolge flug-landtier, saxicolous, landtier,
+; lufttier, tier hat.
+; Bei diesem Beispiel lässt sich besonders schön beobachten, dass gemeinsame
+; Vorgänger nachgelagert sind.
+; (Anhand des Nachlagerns von Landtier gegenüber dem Saxicolous)
+
+; fliegende Fantasie-Fisch
+;(display (getLebensraum (make fantasie-fisch)))
+; '(wasser luft)
+; Die Reihenfolge auf der Präzedenzliste ist fantasie-fisch, meerestier, lufttier, tier.
+; Somit werden sie in dieser Reihenfolge abgearbeitet und die Ergebnisse auf
+; die Liste gepackt.
