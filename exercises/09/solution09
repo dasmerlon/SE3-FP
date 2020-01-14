@@ -1,4 +1,6 @@
-#lang racket
+#lang swindle
+(require swindle/setf
+         swindle/misc)
 
 ;; Blatt 9
 
@@ -25,6 +27,137 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;; 1 --- CLOS und generische Funktionen
 ;; 1.1 - Definition von Klassen (10 Punkte)
+
+; Ein Video
+(defclass* video ()
+  (id
+   :initarg :id
+   :reader get_id
+   :type <integer>
+   :documentation "The unique key of this video"
+   )
+  (producer
+   :initarg :producer
+   :reader get_producer
+   :type <string>
+   :documentation "The producer of this video"
+   )
+  (year
+   :initarg :year
+   :reader get_year
+   :type <integer>
+   :documentation "The year of publication of this video"
+   )
+  (title
+   :initarg :title
+   :reader get_title
+   :type <string>
+   :documentation "The title of this video"
+   )
+  :autopred #t
+  :printer #t
+  :documentation "This is a video")
+
+; Ein Film
+(defclass* movie (video)
+  (company   ;Produktionsgesellschaft
+   :initarg :company
+   :reader get_company
+   :type <string>
+   :documentation "The production company of this movie")
+  (director  ;Regisseur
+   :initarg :director
+   :reader get_director
+   :type <string>
+   :documentation "The director of this movie")
+  (genre     ;Genre
+   :initarg :genre
+   :reader get_genre
+   :type <string>
+   :documentation "The genre of this movie")
+  (agerating ;Altersfreigabe
+   :initarg :agerating
+   :reader get_agerating
+   :type <string>
+   :documentation "The age rating of this movie")
+  :autopred #t
+  :printer #t
+  :documentation "This is a movie")
+
+; Eine Serie
+(defclass* series (movie)
+  (platform  ;Plattform
+   :initarg :platform
+   :reader get_platform
+   :type <string>
+   :documentation "The name of the platform of this series")
+  (episode   ;Nummer der Folge
+   :initarg :episode
+   :reader get_episode
+   :type <integer>
+   :documentation "The episode of this series")
+  :autopred #t
+  :printer #t
+  :documentation "This is a series")
+
+; Ein YouTube-Video
+(defclass* youtube-video (video)
+  (channel   ;Kanalname
+   :initarg :channel
+   :reader get_channel
+   :type <string>
+   :documentation "The name of the channel of this YouTube-video")
+  (link      ;Link
+   :initarg :link
+   :reader get_link
+   :type <string>
+   :documentation "The link of this youtube-video")
+  (month     ;Erscheinungsmonat
+   :initarg :month
+   :reader get_month
+   :initvalue ""
+   :type <string>
+   :documentation "The month of publication of this YouTube-video")
+  :autopred #t
+  :printer #t
+  :documentation "This is a YouTube-video")
+
+; Die Bibliographie
+(define example_movie
+  (make movie
+        :id 1
+        :producer "Chris Bender"
+        :year 2020
+        :title "Disney's Mulan"
+        :company "Walt Disney Pictures"
+        :director "Niki Caro"
+        :genre "Abenteuer"
+        :agerating "PG-13"))
+
+(define example_series
+  (make series
+        :id 2
+        :producer "Paul Germain, Joe Ansolabehere"
+        :year 1997
+        :title "Disneys Große Pause"
+        :company "Walt Disney Television Animation"
+        :director ""
+        :genre "Dramedy"
+        :agerating "FSK 0"
+        :platform "ABC"
+        :episode 1))
+
+(define example_youtube-video
+  (make youtube-video
+        :id 3
+        :producer "Brayden Holness"
+        :year 2019
+        :title "Spending Over $1,000 to RENEW my Annual Pass for Walt Disney World"
+        :channel "Mickey Views - All Things Disney News"
+        :link "https://www.youtube.com/watch?v=TDnBjVGv5eQ"
+        :month "Juni"))
+
+
 ;; 1.2 - Generische Funktionen und Methoden (5 Punkte)
 ;; 1.3 - Ergänzungsmethoden (5 Punkte)
 
