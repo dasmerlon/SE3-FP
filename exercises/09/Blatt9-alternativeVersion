@@ -198,7 +198,9 @@
 
 
 ;; 1.3 - Ergänzungsmethoden (5 Punkte)
-;Eine Ergänzungsmethode ist eine Methode in einer Unterklasse, die das Verhalten einer Methode aus der Oberklasse ergänzt. Dabei wird die Methode aus der Oberklasse nicht ersetzt sonder mit aufgerufen. Mit :before oder :after kann man angeben, ob die Methode der Unterklasse vor der Methode der Oberklasse, oder danach ausgeführt werden soll.
+;Eine Ergänzungsmethode ist eine Methode in einer Unterklasse, die das Verhalten einer Methode aus der Oberklasse ergänzt.
+;Dabei wird die Methode aus der Oberklasse nicht ersetzt sonder mit aufgerufen.
+;Mit :before oder :after kann man angeben, ob die Methode der Unterklasse vor der Methode der Oberklasse, oder danach ausgeführt werden soll.
 
 ;; 2 --- CLOS und Vererbung
 ;; 2.1 - Definition von Klassen (5 Punkte)
@@ -243,7 +245,10 @@
   )
 
 (defclass landtier (tier)
-  (lebensraum :initvalue "land"))
+  (lebensraum :initvalue "land")
+  (lebensraum_land
+   :reader get_lebensraum_land
+   :initvalue "Land"))
 
 (defclass arboreal (landtier)
   (lebensraum :initvalue "Bäume"))
@@ -258,15 +263,21 @@
   (lebensraum :initvalue "Höhlen"))
 
 (defclass meerestier (tier)
-  (lebensraum :initvalue "Meer"))
+  (lebensraum :initvalue "Meer")
+  (lebensraum_meer
+   :reader get_lebensraum_meer
+   :initvalue "Meer"))
 
 (defclass lufttier (tier)
-  (lebensraum :initvalue "Luft"))
+  (lebensraum :initvalue "Luft")
+  (lebensraum_luft
+   :reader get_lebensraum_luft
+   :initvalue "Luft"))
 
 ;; 2.1.2
-(defclass amphibie (meerestier lufttier))
+(defclass amphibie (meerestier landtier))
 
-(defclass libelle (landtier amphibie))
+(defclass libelle (lufttier amphibie))
 
 (defclass flug-landtier (landtier lufttier))
 
@@ -295,7 +306,7 @@
 
 ;Implementationen von read-lebensraum
 (defmethod read-lebensraum ((t landtier))
-  (list (get_lebensraum t)))
+  (list (get_lebensraum_land t)))
 
 (defmethod read-lebensraum ((t arboreal))
   (list (get_lebensraum t)))
@@ -310,10 +321,10 @@
   (list (get_lebensraum t)))
 
 (defmethod read-lebensraum ((t meerestier))
-  (list (get_lebensraum t)))
+  (list (get_lebensraum_meer t)))
 
 (defmethod read-lebensraum ((t lufttier))
-  (list (get_lebensraum t)))
+  (list (get_lebensraum_luft t)))
 
 ;Implementationen von read-geschwindigkeit
 (defmethod read-geschwindigkeit ((t landtier))
@@ -351,9 +362,27 @@
                      :verbrauch 0.5
                      :lebenserwartung 1))
 
+(define Libelle (make libelle
+                      :geschwindigkeit 30
+                      :gefahr 2
+                      :verbrauch 5
+                      :lebenserwartung 1))
 
-(displayln (read-lebensraum tiger))
-(displayln (read-geschwindigkeit tiger))
+(define baer (make troglofauna
+                   :geschwindigkeit 45
+                   :gefahr 9
+                   :verbrauch 80
+                   :lebenserwartung 40))
 
-(displayln (read-lebensraum frosch))
-(displayln (read-geschwindigkeit frosch))
+
+;(displayln (read-lebensraum tiger))
+;(displayln (read-geschwindigkeit tiger))
+
+;(displayln (read-lebensraum frosch))
+;(displayln (read-geschwindigkeit frosch))
+
+;(displayln (read-lebensraum Libelle))
+;(displayln (read-geschwindigkeit Libelle))
+
+;(displayln (read-lebensraum baer))
+;(displayln (read-geschwindigkeit baer))
