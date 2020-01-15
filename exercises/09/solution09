@@ -202,10 +202,11 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 (defgeneric getMaxGeschwindigkeit ((t tier))
   :combination generic-max-combination)
 
-; Da hier die Maximalgefährlichkeit wichtig für das Wohlbefinden des Menschen ist,
-; nutzen wir die generic-max-combination
+; Ein Tier ist entweder gefährlich (#t) oder ungefährlich (#f) für den Menschen.
+; Daher wählen wir die or-Kombination, da das Tier als gefährlich angezeigt werden
+; soll, auch wenn es nur teilgefährlich ist.
 (defgeneric getGefaehrlichkeit ((t tier))
-  :combination generic-max-combination)
+  :combination generic-or-combination)
 
 ; Da der Verbrauch an Nahrung abhängig von dem Lebensraum und der Umgebung der
 ; sportlichen Aktivität ist, ist die + Kombination am sinnvollsten, denn man kennt es ja:
@@ -273,17 +274,17 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ; Gewählt wurde die Wiedergabe der Gefährlichkeit
 (defmethod getGefaehrlichkeit ((m meerestier))
-  50)
+  #t)
 (defmethod getGefaehrlichkeit ((l lufttier))
-  10)
+  #f)
 (defmethod getGefaehrlichkeit ((a arboreal))
-  30)
+  #f)
 (defmethod getGefaehrlichkeit ((s saxicolous))
-  20)
+  #f)
 (defmethod getGefaehrlichkeit ((a arenicolous))
-  60)
+  #t)
 (defmethod getGefaehrlichkeit ((t troglofauna))
-  80)
+  #t)
 
 
 ; Die Klassenpräzedenzliste ist hierbei unerlässlich,
@@ -291,25 +292,25 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ; Amphibientier
 (displayln (getGefaehrlichkeit (make amphibie)))
-; 50
+; #t
 ; Die Präzedenzliste in der Reihenfolge amphibie, meerestier, landtier, tier
-; Da Landtier und Tier keine Methode anbieten für getGefaehrlichkeit: '(50) 
+; Da Landtier und Tier keine Methode anbieten für getGefaehrlichkeit: '(#t) 
 
 ; Libellentier
 (displayln (getGefaehrlichkeit (make libelle)))
-; 50
+; #t
 ; Präzedenzliste: libelle, Lufttier, amphibie, meerestier, landtier, tier.
-; '(10 50)
+; '(#f #t)
 
 ; flugfähige Landtier
 (displayln (getGefaehrlichkeit (make flug-landtier)))
-; 20
+; #f
 ; Da die Präzedenzliste die Reihenfolge flug-landtier, saxicolous, landtier,
 ; lufttier, tier hat.
-; '(20 10)
+; '(#f #f)
 
 ; fliegende Fantasie-Fisch
 (displayln (getGefaehrlichkeit (make fantasie-fisch)))
-; 50
+; #t
 ; Die Reihenfolge auf der Präzedenzliste ist fantasie-fisch, meerestier, lufttier, tier.
-; '(50 10)
+; '(#t #f)
