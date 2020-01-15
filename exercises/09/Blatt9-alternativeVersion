@@ -4,13 +4,6 @@
 
 ;; Blatt 9
 
-#|
-Ergänzung zu Aufgabenblatt 9: Methodenkombination*
-
-Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für string-append:
-
-|#
-
 ;; 1 --- CLOS und generische Funktionen
 ;; 1.1 - Definition von Klassen (10 Punkte)
 
@@ -152,6 +145,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
    (lambda (s)
      (apply string-append s))))
 
+;generische cite Methode
 (defgeneric cite ((v video))
   :combination string-append-combination)
 
@@ -281,16 +275,16 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;; 2.2 - Operationen und Methodenkombination (5 Punkte)
 (defgeneric read-lebensraum ((t tier))
-  :combination string-append-combination)
+  :combination generic-append-combination)
 
 (defgeneric read-geschwindigkeit ((t tier))
-  :combination generic-min-combination)
+  :combination generic-max-combination)
 
 (defgeneric read-gefahr ((t tier))
-  :combination generic-min-combination)
+  :combination generic-max-combination)
 
 (defgeneric read-verbrauch ((t tier))
-  :combination generic-max-combination)
+  :combination generic-min-combination)
 
 (defgeneric read-lebenserwartung ((t tier))
   :combination generic-min-combination)
@@ -299,32 +293,67 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 ;(defmethod read-lebensraum ((t tier))
 ;  (get_lebensraum t))
 
+;Implementationen von read-lebensraum
 (defmethod read-lebensraum ((t landtier))
-  (get_lebensraum t))
+  (list (get_lebensraum t)))
 
 (defmethod read-lebensraum ((t arboreal))
-  (get_lebensraum t))
+  (list (get_lebensraum t)))
 
 (defmethod read-lebensraum ((t saxicolous))
-  (get_lebensraum t))
+  (list (get_lebensraum t)))
 
 (defmethod read-lebensraum ((t arenicolous))
-  (get_lebensraum t))
+  (list (get_lebensraum t)))
 
 (defmethod read-lebensraum ((t troglofauna))
-  (get_lebensraum t))
+  (list (get_lebensraum t)))
 
 (defmethod read-lebensraum ((t meerestier))
-  (get_lebensraum t))
+  (list (get_lebensraum t)))
 
 (defmethod read-lebensraum ((t lufttier))
-  (get_lebensraum t))
+  (list (get_lebensraum t)))
+
+;Implementationen von read-geschwindigkeit
+(defmethod read-geschwindigkeit ((t landtier))
+  (get_geschwindigkeit t))
+
+(defmethod read-geschwindigkeit ((t arboreal))
+  (get_geschwindigkeit t))
+
+(defmethod read-geschwindigkeit ((t saxicolous))
+  (get_geschwindigkeit t))
+
+(defmethod read-geschwindigkeit ((t arenicolous))
+  (get_geschwindigkeit t))
+
+(defmethod read-geschwindigkeit ((t troglofauna))
+  (get_geschwindigkeit t))
+
+(defmethod read-geschwindigkeit ((t meerestier))
+  (get_geschwindigkeit t))
+
+(defmethod read-geschwindigkeit ((t lufttier))
+  (get_geschwindigkeit t))
 
 
+;Beispiel Tiere
 (define tiger (make landtier
                     :geschwindigkeit 50
                     :gefahr 10
                     :verbrauch 50
                     :lebenserwartung 30))
 
+(define frosch (make amphibie
+                     :geschwindigkeit 3
+                     :gefahr 1
+                     :verbrauch 0.5
+                     :lebenserwartung 1))
+
+
 (displayln (read-lebensraum tiger))
+(displayln (read-geschwindigkeit tiger))
+
+(displayln (read-lebensraum frosch))
+(displayln (read-geschwindigkeit frosch))
