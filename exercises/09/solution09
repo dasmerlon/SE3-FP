@@ -161,6 +161,18 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 ;; 1.2 - Generische Funktionen und Methoden (5 Punkte)
 ;; 1.3 - Ergänzungsmethoden (5 Punkte)
 
+; Mit einer Ergänzungsmethode ist es möglich, dass Methoden von vererbten
+; Klassen auf die vorhandenen Methoden der Vorfahrenklasse aufbauen.
+; Mit »:before«, »:after« und »:around« ist es möglich, zu einem bestimmten
+; Zeitpunkt die vorhandene Methode zu ergänzen.
+
+; Daraus resultiert ein großer Vorteil: Man muss nicht eine vorhandene Methode
+; neu implementieren und quasi Code duplizieren.
+; Die Vorzüge gegenüber den »super-calls«, wie sie in Java zu finden sind,
+; bestehen darin, dass man keinen Methodenaufruf vergessen kann, da sie auf
+; jedenfall (vorher oder nachher) ausgeführt werden.
+
+
 ;; 2 --- CLOS und Vererbung
 ;; 2.1 - Definition von Klassen (5 Punkte)
 ;; 2.1.1
