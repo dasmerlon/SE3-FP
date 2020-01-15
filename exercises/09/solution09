@@ -303,26 +303,26 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 ; da sie die Reihenfolge bestimmt, in der die Methoden angewandt werden
 
 ; Amphibientier
-(displayln (getGefaehrlichkeit (make amphibie)))
+;(displayln (getGefaehrlichkeit (make amphibie)))
 ; #t
 ; Die Präzedenzliste in der Reihenfolge amphibie, meerestier, landtier, tier
 ; Da Landtier und Tier keine Methode anbieten für getGefaehrlichkeit: '(#t) 
 
 ; Libellentier
-(displayln (getGefaehrlichkeit (make libelle)))
+;(displayln (getGefaehrlichkeit (make libelle)))
 ; #t
 ; Präzedenzliste: libelle, Lufttier, amphibie, meerestier, landtier, tier.
 ; '(#f #t)
 
 ; flugfähige Landtier
-(displayln (getGefaehrlichkeit (make flug-landtier)))
+;(displayln (getGefaehrlichkeit (make flug-landtier)))
 ; #f
 ; Da die Präzedenzliste die Reihenfolge flug-landtier, saxicolous, landtier,
 ; lufttier, tier hat.
 ; '(#f #f)
 
 ; fliegende Fantasie-Fisch
-(displayln (getGefaehrlichkeit (make fantasie-fisch)))
+;(displayln (getGefaehrlichkeit (make fantasie-fisch)))
 ; #t
 ; Die Reihenfolge auf der Präzedenzliste ist fantasie-fisch, meerestier, lufttier, tier.
 ; '(#t #f)
