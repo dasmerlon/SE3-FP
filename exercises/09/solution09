@@ -159,8 +159,64 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 
 ;; 1.2 - Generische Funktionen und Methoden (5 Punkte)
-;; 1.3 - Ergänzungsmethoden (5 Punkte)
+(define* string-append-combination
+  (make-generic-combination
+   :process-result
+   (lambda (s)
+     (apply string-append s))))
 
+(defgeneric cite ((v video))
+  :combination string-append-combination)
+
+;cite fuer einen Film
+(defmethod cite ((f movie))
+  ( string-append
+    "Production Company: "
+    (get_company f)
+    " Regisseur: "
+    (get_director f)
+    " Genre: "
+    (get_genre f)
+    " Altersfreigabe: "
+    (get_agerating f)
+    " "))
+
+;cite fuer eine Serie
+(defmethod cite ((s series))
+  ( string-append
+    " Plattform: "
+    (get_platform s)
+    " Nummer der Folge: "
+    (get_episode s)
+    " "))
+
+;cite fuer ein youtube-video
+(defmethod cite ((v youtube-video))
+  ( string-append
+    " Kanal: "
+    (get_channel v)
+    " Youtubelink: "
+    (get_link v)
+    " Monat der Veroeffentlichung "
+    (get_month v)
+    " "))
+
+;cite fuer ein video
+(defmethod cite ((v video))
+  ( string-append
+    " Produzent: "
+    (get_producer v)
+    " Erscheinungsjahr: "
+    (number->string (get_year v))
+    " Titel: "
+    (get_title v)
+    " "))
+
+
+(displayln (cite example_movie))
+
+
+;; 1.3 - Ergänzungsmethoden (5 Punkte)
 ; Mit einer Ergänzungsmethode ist es möglich, dass Methoden von vererbten
 ; Klassen auf die vorhandenen Methoden der Vorfahrenklasse aufbauen.
 ; Mit »:before«, »:after« und »:around« ist es möglich, zu einem bestimmten

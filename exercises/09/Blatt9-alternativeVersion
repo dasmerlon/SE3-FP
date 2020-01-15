@@ -150,10 +150,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
   (make-generic-combination
    :process-result
    (lambda (s)
-     (apply string-append s)
-     )
-   )
-  )
+     (apply string-append s))))
 
 (defgeneric cite ((v video))
   :combination string-append-combination)
@@ -191,7 +188,6 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
     (get_month v)
     " "))
 
-
 ;cite fuer ein video
 (defmethod cite ((v video))
   ( string-append
@@ -205,6 +201,8 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 
 (displayln (cite example_movie))
+
+
 ;; 1.3 - Ergänzungsmethoden (5 Punkte)
 ;Eine Ergänzungsmethode ist eine Methode in einer Unterklasse, die das Verhalten einer Methode aus der Oberklasse ergänzt. Dabei wird die Methode aus der Oberklasse nicht ersetzt sonder mit aufgerufen. Mit :before oder :after kann man angeben, ob die Methode der Unterklasse vor der Methode der Oberklasse, oder danach ausgeführt werden soll.
 
@@ -282,11 +280,11 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 
 ;; 2.2 - Operationen und Methodenkombination (5 Punkte)
-( defgeneric read-lebensraum ((t tier)) :combination string-append-combination )
-( defgeneric read-geschwindigkeit ((t tier)) :combination generic-min-combination )
-( defgeneric read-gefahr ((t tier)) :combination generic-min-combination )
-( defgeneric read-verbrauch ((t tier)) :combination generic-max-combination )
-( defgeneric read-lebenserwartung ((t tier)) :combination generic-min-combination )
+( defgeneric read-lebensraum ((t tier)) :combination string-append-combination)
+( defgeneric read-geschwindigkeit ((t tier)) :combination generic-min-combination)
+( defgeneric read-gefahr ((t tier)) :combination generic-min-combination)
+( defgeneric read-verbrauch ((t tier)) :combination generic-max-combination)
+( defgeneric read-lebenserwartung ((t tier)) :combination generic-min-combination)
 
 ;; 2.3 - Klassenpräzedenz bei Mehrfachvererbung (10 Punkte)
 ;(defmethod read-lebensraum ((t tier))
@@ -314,6 +312,10 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
   (get_lebensraum t))
 
 
-(define tiger (make landtier :geschwindigkeit 50 :gefahr 10 :verbrauch 50 :lebenserwartung 30))
+(define tiger (make landtier
+                    :geschwindigkeit 50
+                    :gefahr 10
+                    :verbrauch 50
+                    :lebenserwartung 30))
 
 (displayln (read-lebensraum tiger))
