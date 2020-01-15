@@ -157,7 +157,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer einen Film
 (defmethod cite ((f movie))
-  ( string-append
+  (string-append
     "\nProduction Company: "
     (get_company f)
     "\nRegisseur: "
@@ -170,7 +170,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer eine Serie
 (defmethod cite ((s series))
-  ( string-append
+  (string-append
     "\nPlattform: "
     (get_platform s)
     "\nNummer der Folge: "
@@ -179,7 +179,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer ein youtube-video
 (defmethod cite ((v youtube-video))
-  ( string-append
+  (string-append
     "\nKanal: "
     (get_channel v)
     "\nYoutubelink: "
@@ -190,7 +190,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer ein video
 (defmethod cite ((v video))
-  ( string-append
+  (string-append
     "Produzent: "
     (get_producer v)
     "\nErscheinungsjahr: "
@@ -280,11 +280,20 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 
 ;; 2.2 - Operationen und Methodenkombination (5 Punkte)
-( defgeneric read-lebensraum ((t tier)) :combination string-append-combination)
-( defgeneric read-geschwindigkeit ((t tier)) :combination generic-min-combination)
-( defgeneric read-gefahr ((t tier)) :combination generic-min-combination)
-( defgeneric read-verbrauch ((t tier)) :combination generic-max-combination)
-( defgeneric read-lebenserwartung ((t tier)) :combination generic-min-combination)
+(defgeneric read-lebensraum ((t tier))
+  :combination string-append-combination)
+
+(defgeneric read-geschwindigkeit ((t tier))
+  :combination generic-min-combination)
+
+(defgeneric read-gefahr ((t tier))
+  :combination generic-min-combination)
+
+(defgeneric read-verbrauch ((t tier))
+  :combination generic-max-combination)
+
+(defgeneric read-lebenserwartung ((t tier))
+  :combination generic-min-combination)
 
 ;; 2.3 - Klassenpräzedenz bei Mehrfachvererbung (10 Punkte)
 ;(defmethod read-lebensraum ((t tier))

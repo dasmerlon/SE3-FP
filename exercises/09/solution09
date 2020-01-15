@@ -170,7 +170,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer einen Film
 (defmethod cite ((f movie))
-  ( string-append
+  (string-append
     "\nProduction Company: "
     (get_company f)
     "\nRegisseur: "
@@ -183,7 +183,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer eine Serie
 (defmethod cite ((s series))
-  ( string-append
+  (string-append
     "\nPlattform: "
     (get_platform s)
     "\nNummer der Folge: "
@@ -192,7 +192,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer ein youtube-video
 (defmethod cite ((v youtube-video))
-  ( string-append
+  (string-append
     "\nKanal: "
     (get_channel v)
     "\nYoutubelink: "
@@ -203,7 +203,7 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 
 ;cite fuer ein video
 (defmethod cite ((v video))
-  ( string-append
+  (string-append
     "Produzent: "
     (get_producer v)
     "\nErscheinungsjahr: "
