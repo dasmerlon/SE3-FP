@@ -171,44 +171,44 @@ Hier ist ein Beispiel für eine selbstdefinierte Methodenkombination, z.B. für 
 ;cite fuer einen Film
 (defmethod cite ((f movie))
   ( string-append
-    "Production Company: "
+    "\nProduction Company: "
     (get_company f)
-    " Regisseur: "
+    "\nRegisseur: "
     (get_director f)
-    " Genre: "
+    "\nGenre: "
     (get_genre f)
-    " Altersfreigabe: "
+    "\nAltersfreigabe: "
     (get_agerating f)
     " "))
 
 ;cite fuer eine Serie
 (defmethod cite ((s series))
   ( string-append
-    " Plattform: "
+    "\nPlattform: "
     (get_platform s)
-    " Nummer der Folge: "
+    "\nNummer der Folge: "
     (get_episode s)
     " "))
 
 ;cite fuer ein youtube-video
 (defmethod cite ((v youtube-video))
   ( string-append
-    " Kanal: "
+    "\nKanal: "
     (get_channel v)
-    " Youtubelink: "
+    "\nYoutubelink: "
     (get_link v)
-    " Monat der Veroeffentlichung "
+    "\nMonat der Veroeffentlichung "
     (get_month v)
     " "))
 
 ;cite fuer ein video
 (defmethod cite ((v video))
   ( string-append
-    " Produzent: "
+    "Produzent: "
     (get_producer v)
-    " Erscheinungsjahr: "
+    "\nErscheinungsjahr: "
     (number->string (get_year v))
-    " Titel: "
+    "\nTitel: "
     (get_title v)
     " "))
 
