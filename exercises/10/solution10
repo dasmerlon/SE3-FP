@@ -27,7 +27,9 @@
 
 ;  1.1.2 (6 Punkte)
 (define (zeile->indizes y)
-  (map (curry + y) (range 9)))
+  (map (lambda (x)
+         (xy->index x y))
+       (range 9)))
 
 
 (define (spalte->indizes x)
@@ -44,16 +46,16 @@
             (range (xy->index x (+ y 2)) (+ (xy->index x (+ y 2)) 3)))))
 
 ; Zum Testen:
-(zeile->indizes 0)
-(spalte->indizes 5)
-(quadrant->indizes 8)
+;(zeile->indizes 0)
+;(spalte->indizes 5)
+;(quadrant->indizes 8)
 
 
 ;  1.1.3 (1 Punkt)
-(define (spiel->eintraege spiel indexmenge)
+(define (spiel->eintraege spiel indizes)
   (map (lambda (x)
-         (list-ref (vector->list spiel) x))
-       indexmenge))
+         (vector-ref spiel x))
+       indizes))
 
 ; Zum Testen:
 ;(spiel->eintraege spiel (zeile->indizes 0))
@@ -62,6 +64,40 @@
 
 
 ;  1.1.4 (6 Punkte)
+;(apply = '(0 0 0))  ; alle gleich?
+;(false? (check-duplicates '(1 2 3 4 0))) ; alle unterschiedlich?
+
+(define (loescheNull liste)
+  (remove* '(0) liste))
+
+
+(define (checkBereich spiel bereich)
+  (andmap false?
+          (map check-duplicates
+               (map loescheNull bereich))))
+
+
+(define (spiel-konsistent? spiel)
+  (let ([alleZeilen (map (lambda (x)
+                           (spiel->eintraege spiel (zeile->indizes x)))
+                         (range 9))]
+        [alleSpalten (map (lambda (x)
+                            (spiel->eintraege spiel (spalte->indizes x)))
+                          (range 9))]
+        [alleQuadranten (map (lambda (x)
+                               (spiel->eintraege spiel (quadrant->indizes x)))
+                             (range 9))])
+    (and
+            (checkBereich spiel alleZeilen)
+            (checkBereich spiel alleSpalten)
+            (checkBereich spiel alleQuadranten))))
+   
+
+(spiel-konsistent? spiel)
+
+
+
+
 
 
 
