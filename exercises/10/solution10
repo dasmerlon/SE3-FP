@@ -50,7 +50,20 @@
 
 
 ;  1.1.3 (1 Punkt)
+(define (spiel->eintraege spiel indexmenge)
+  (map (lambda (x)
+         (list-ref (vector->list spiel) x))
+       indexmenge))
+
+; Zum Testen:
+;(spiel->eintraege spiel (zeile->indizes 0))
+;(spiel->eintraege spiel (spalte->indizes 5))
+;(spiel->eintraege spiel (quadrant->indizes 8))
+
+
 ;  1.1.4 (6 Punkte)
+
+
 
 ;; 1.2 - Sudoku lösen (ohne Backtracking)
 ;  1.2.1 (5 Punkte)
