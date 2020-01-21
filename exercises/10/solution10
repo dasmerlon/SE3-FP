@@ -88,9 +88,9 @@
                                (spiel->eintraege spiel (quadrant->indizes x)))
                              (range 9))])
     (and
-            (checkBereich spiel alleZeilen)
-            (checkBereich spiel alleSpalten)
-            (checkBereich spiel alleQuadranten))))
+     (checkBereich spiel alleZeilen)
+     (checkBereich spiel alleSpalten)
+     (checkBereich spiel alleQuadranten))))
    
 ; Zum Testen:
 ;(spiel-konsistent? spiel)
