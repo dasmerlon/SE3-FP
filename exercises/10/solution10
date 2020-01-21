@@ -92,13 +92,16 @@
             (checkBereich spiel alleSpalten)
             (checkBereich spiel alleQuadranten))))
    
-
-(spiel-konsistent? spiel)
-
-
+; Zum Testen:
+;(spiel-konsistent? spiel)
 
 
+(define (spiel-geloest? spiel)
+  (and (spiel-konsistent? spiel)
+       (zero? (vector-length (vector-filter zero? spiel)))))
 
+; Zum Testen:
+;(spiel-geloest? spiel)
 
 
 ;; 1.2 - Sudoku lösen (ohne Backtracking)
