@@ -1,11 +1,23 @@
 #lang racket
+(require racklog)
 
 ;; Blatt 11
 
 ;; 1 --- Prolog in Racket
 ;; 1.1 - Unifikation (10 Punkte)
+; a)  geht nicht, weil die Ausdrücke teils 2, teils 3 Ausdrücke haben
+; b)  ((?A . 3+2))
+; c)  nicht möglich, da ?A nicht zwei Ausdrücke sein kann
+; d)  ((?A . (3 + 2))
+; e)  ((?X . 1) (?B . 2) (?REST . (?B ?X)))
+; f)  Falsche Syntax: kein Space zwischen . und ?REST
+;     falls ". ?REST": ((?X . 1) (?B . 2) (?Y . (1)) (?REST . (?B ?Y)))
+
+; g)
+
 ;; 1.2 - Anfragen (10 Punkte)
 
 ;; 2 --- Memo-Funktionen (5 Punkte)
 
 ;; 3 --- Stromorientierte Programmierung (10 Punkte)
+
