@@ -5,39 +5,131 @@
 
 ;; 1 --- Prolog in Racket
 ;; 1.1 - Unifikation (10 Punkte)
+
 ; a)  geht nicht, weil die Ausdrücke teils 2, teils 3 Ausdrücke haben
+;     assoc: non-pair found in list: 1 in (1 + ?b)
+#|
 ; b)  ((?A . 3+2))
-; c)  nicht möglich, da ?A nicht zwei Ausdrücke sein kann
-; d)  ((?A . (3 + 2))
-; e)  ((?X . 1) (?B . 2) (?REST . (?B ?X)))
+(unify '(?A + 1)
+       '(3+2 + 1) no-bindings)
+|#
+#|
+; c)  #f  nicht möglich, da ?A nicht zwei Ausdrücke sein kann
+(unify '(?A + 1)
+       '(3 + 2 + 1) no-bindings)
+|#
+#|
+; d)  ((?A 3 + 2))
+(unify '(?A + 1)
+       '((3 + 2) + 1) no-bindings)
+|#
+#|
+; e)  ((?REST ?B ?X) (?B . 2) (?X . 1))
+(unify '(1 ?B . ?REST)
+       '(?X 2 ?B ?X) no-bindings)
+|#
 ; f)  Falsche Syntax: kein Space zwischen . und ?REST
-;     falls ". ?REST": ((?X . 1) (?B . 2) (?Y . (1)) (?REST . (?B ?Y)))
+;     ?Rest = (2 1)
+;     ?X = 1
+;     ?B = 2
+;     ?Y = 1
 
 ; g)
-(unify '(?a + ?b + 3)
-       '(1 + ?b + ?D)
-       '(1 + ?b)
-       '(1 + 4)
-       no-bindings)
+;(?- (= (1 ?B . ?Rest) (?X 2 ?B ?Y)) (= (?X 2 ?B . (1)) (?X 2 ?B ?Y)))
 
-(unify '(?a + 1)
-       '(3+2 +1)
-       no-bindings)
-
-
-(unify '(?a + 1)
-       '(3 + 2 +1)
-       no-bindings)
-
-(unify '(?a + 1)
-       '((3 + 2) +1)
-       no-bindings)
-
-(unify '(1 ?B .?REST)
-       '(?X 2 ?B ?Y)
-       '(?X 2 ?B . (1)) no-bindings)
 
 ;; 1.2 - Anfragen (10 Punkte)
+
+;   (schueler Name    ID Lieblingsfach)
+(<- (schueler "Max"    0 4))
+(<- (schueler "Laura"  1 2))
+(<- (schueler "Timo"   2 0))
+(<- (schueler "Gustav" 3 0))
+(<- (schueler "Marie"  4 1))
+;   (note SchuelerID Fach Note)"
+(<- (note 1 4 2))
+(<- (note 2 0 1))
+(<- (note 4 3 4))
+(<- (note 3 4 2))
+(<- (note 4 1 1))
+;   (fach ID Fach)
+(<- (fach 0 "Mathe"))
+(<- (fach 1 "Deutsch"))
+(<- (fach 2 "Englisch"))
+(<- (fach 3 "Physik"))
+(<- (fach 4 "Chemie"))
+
+
+; 1. Welche Schüler (Namen) haben eine 2 in Chemie?
+(<- (IDNoteFach ?SchuelerID ?Note ?Fach)
+    :- (note ?SchuelerID ?FachID ?Note)
+       (fach ?FachID ?Fach))
+(<- (NameNoteFach ?Name ?Note ?Fach)
+    :- (schueler ?Name ?SchuelerID ?)
+       (IDNoteFach ?SchuelerID ?Note ?Fach))
+
+;(?- (NameNoteFach ?Name 2 "Chemie"))
+; -> (?Name = Laura ; ?Name = Gustav ; No.)
+
+#|
+; Alternativ:
+(?- (schueler ?Name ?SchuelerID ?)
+    (fach ?FachID "Chemie")
+    (note ?SchuelerID ?FachID 2))
+|#
+
+
+; 2. Wie viele Schüler haben eine 2 in Chemie?
+(<- (AnzahlNoteFach ?Anzahl ?Note ?Fach)
+    :- (findall ?Name  (NameNoteFach ?Name ?Note ?Fach) ?Liste)
+       (length ?Liste ?Anzahl))
+
+;(?- (AnzahlNoteFach ?Anzahl 2 "Chemie"))
+; -> (?Anzahl = 2 ; No.)
+
+#|
+; Alternativ:
+(?- (fach ?FachID "Chemie")
+    (findall ?SchuelerID  (note ?SchuelerID ?FachID 2) ?Liste)
+    (length ?Liste ?Laenge))
+|#
+
+
+; 3. Welche Schüler (Namen) haben dasselbe Lieblingsfach?
+(<- (Hilfsfunktion ?Name1 ?Name2)
+    :- (schueler ?Name1 ? ?Lieblingsfach)
+       (schueler ?Name2 ? ?Lieblingsfach))
+(<- (gleichesLieblingsfach ?Name1 ?Name2)
+    :- (Hilfsfunktion ?Name1 ?Name2)
+       (!= ?Name1 ?Name2))
+
+;(?- (gleichesLieblingsfach ?Name1 ?Name2))
+; -> (?Name1 = Timo ?Name2 = Gustav ; ?Name1 = Gustav ?Name2 = Timo ; No.)
+
+#|
+; Alternativ:
+(?- (schueler ?Name1 ? ?Lieblingsfach)
+    (schueler ?Name2 ? ?Lieblingsfach)
+    (!= ?Name1 ?Name2))
+|#
+
+
+; 4. Welche Schüler haben in irgendeinem Fach eine Note schlechter 3?
+(<- (schlechterX ?Name ?X)
+    (schueler ?Name ?SchuelerID ?)
+    (note ?SchuelerID ? ?Note)
+    (test (> ?Note ?X)))
+
+;(?- (schlechterX ?Name 3))
+; -> (?Name = Marie ; No.)
+
+#|
+; Alternativ:
+(?- (schueler ?Name ?SchuelerID ?)
+    (note ?SchuelerID ? ?Note)
+    (test (> ?Note 3)))
+|#
+
 
 ;; 2 --- Memo-Funktionen (5 Punkte)
 
