@@ -108,6 +108,7 @@
 ;(spiel-konsistent? spiel)
 
 
+
 (define (spiel-geloest? spiel)
   ; prüft ob ein Spielstand gelöst ist
   (and (spiel-konsistent? spiel)
@@ -118,12 +119,110 @@
 
 
 ;; 1.2 - Sudoku lösen (ohne Backtracking)
+
+
+;Alle möglichen 9er Indexlisten in einer Liste
+(define indexlisten
+  (append (map (lambda (x)
+                           (zeile->indizes x))
+                         (range 9))
+          (map (lambda (x)
+                            (spalte->indizes x))
+                          (range 9))
+          (map (lambda (x)
+                               (quadrant->indizes x))
+                             (range 9))))
+
+
 ;  1.2.1 (5 Punkte)
+(define (markiere-ausschluss-neunerliste spiel indexliste zahl)
+  (let ([wertliste (map (lambda (x) (vector-ref spiel x))
+                        indexliste)])
+    (if (member zahl wertliste)
+        (map (lambda (x) (list-ref indexliste x))
+             (indexes-of wertliste 0))
+        '())))
+
+
+
+(define (markiere-ausschluss spiel zahl)
+  (let ([ausgabe (vector-copy spiel)]
+        [kreuzliste (remove-duplicates (flatten (map (lambda (x)
+(markiere-ausschluss-neunerliste spiel x zahl))
+                                                     indexlisten)))])
+    (for-each (lambda (x) (vector-set! ausgabe x 'X))
+              kreuzliste)
+    ausgabe))
+
+
+;(markiere-ausschluss spiel 6)
+
 ;  1.2.2 (5 Punkte)
+
+(define (eindeutige-position spiel indexliste zahl)
+  (let ([werteliste (map (lambda (x) (vector-ref spiel x))
+                         indexliste)])
+    (if (equal? (filter (lambda (x) (equal? x 0))
+                        werteliste)
+                '(0))
+        (list-ref indexliste (index-of werteliste 0))
+        '())))
+
+
+
+(define (eindeutige-positionen spiel zahl)
+  (let ([annotations (markiere-ausschluss spiel zahl)])
+    (remove-duplicates (flatten (map (lambda (x) (eindeutige-position annotations x zahl))
+                                     indexlisten)))))
+
 ;  1.2.3 (10 Punkte)
 
+(define (loese-eine-zahl spiel zahl)
+  (let ([positionen (eindeutige-positionen spiel zahl)])
+    (if (empty? positionen)
+        #f
+        (for-each (lambda (x) (vector-set! spiel x zahl))
+                  positionen))))
+
+
+(define (loese-spiel spiel)
+  (let ([ausgabe (vector-copy spiel)])
+    (if (ormap (lambda (x) (loese-eine-zahl ausgabe x))
+               (range 1 10))
+        (loese-spiel ausgabe)
+        (if (spiel-geloest? ausgabe)
+            ausgabe
+            (println "Nicht loesbar")))))
+
+
 ;; 1.3 - Grafische Ausgabe
+(require 2htdp/image)
+
 ;  1.3.1 (5 Punkte)
+
+(define (rechteck-mit-rand size color)
+  (overlay (square size "solid" color) (square size "outline" "black")))
+
+
+(define (rechteck-mit-zahl zahl size)
+  (cond [(equal? zahl 'X) (rechteck-mit-rand size "red")]
+        [(equal? zahl 0) (rechteck-mit-rand size "white")]
+        [else (overlay (text (number->string zahl) size "black") (rechteck-mit-rand size "white"))]))
+
+
+(define (zeichne-spiel spiel)
+  (let ([rechtecklisten (map (lambda (x) (map (lambda (wert) (rechteck-mit-zahl wert 20))
+                                              (spiel->eintraege spiel (zeile->indizes x))))
+                             (range 9))])
+    
+    (apply above (map (lambda (x) (apply beside x))
+                       rechtecklisten))))
+
+;(zeichne-spiel spiel)
+;(zeichne-spiel (loese-spiel spiel))
+;(zeichne-spiel (markiere-ausschluss spiel 5))
+
+
 ;  1.3.2 (5 Zusatzpunkte)
 
 ;; 2 --- Wiederholung, Klausurvorbereitung
