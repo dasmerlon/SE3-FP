@@ -2,4 +2,41 @@
 
 ;; 2 --- Memo-Funktionen (5 Punkte)
 
+
 ;; 3 --- Stromorientierte Programmierung (10 Punkte)
+(define (natsAbN n)
+  ; Erzeugt einen Strom natürlicher Zahlen, angefangen mit n
+  (cons n (natsAbN (+ n 1))))
+
+(define (devisible? x y)
+  ; Prüft, ob eine Zahl glatt durch eine andere teilbar ist
+  (= 0 (remainder x y)))
+
+(define (chooseFlipFlap x)
+  ; Wählt basierend der Zahl x aus, ob flipflap, flip oder flap ausgegeben werden soll.
+  ; Sonst soll die Zahl wieder gegeben werden.
+  ; Die erste Bedingung (not integer?) ist nötig, da der Eingabestrom auch schon flips,
+  ; flaps und flipflaps enthält.
+  (cond
+    [(not (integer? x)) x]
+    [(and (devisible? x 3)(devisible? x 5)) "flipflap"]
+    [(devisible? x 3) "flip"]
+    [(devisible? x 5) "flap"]
+    [else x]))
+
+(define (sieve stream)
+  ; Siebt den Strom mit map auf jedem ELement
+  (cons (car stream)
+        (map (lambda (x) (chooseFlipFlap x))
+             (sieve (cdr stream)))))
+
+(define flipflap
+  ; Definiert den Strom mit dem Sieb
+  (sieve (natsAbN 1)))
+
+(define (test n)
+  ; Die Testfunktion, die n-viele ELemente aus dem Stream entnimmt
+  (!! (take n flipflap)))
+
+;Zum Testen:
+;(test 50)
