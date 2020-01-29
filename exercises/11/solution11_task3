@@ -1,39 +1,5 @@
 #lang lazy
 
-;; 2 --- Memo-Funktionen (5 Punkte)
-(define (memo fn)
-  ;Implementation der memo Tabelle als Assoziationsliste
-  (letrec
-      ([table '()]
-       [store (lambda (arg val)
-                (set! table 
-                      (cons (cons arg val) table)) val)]
-       [retrieve
-        (lambda (arg)
-          (let ((val-pair (assoc arg table)))
-            (if 
-             val-pair 
-             (cdr val-pair)
-             #f)))]
-       [ensure-val
-        (lambda (x)
-          (let ([stored-val (retrieve x)])
-            (if
-             stored-val
-             stored-val
-             (store x (fn x)))))])
-    ensure-val))
-
-(define (harmonische-reihe n)
-  ;Die Funktion zur Berechnung der harmonischen Reihe
-  (if (= n 1)
-      n
-      (+ (/ 1 n) (harmonische-reihe (- n 1)))))
-
-;Die Memo-Funktion für die harmonische Reihe
-(define memo-harm (memo harmonische-reihe))
-
-
 ;; 3 --- Stromorientierte Programmierung (10 Punkte)
 (define (natsAbN n)
   ; Erzeugt einen Strom natürlicher Zahlen, angefangen mit n
