@@ -14,7 +14,7 @@
             (if 
              val-pair 
              (cdr val-pair)
-             #f )))]
+             #f)))]
        [ensure-val
         (lambda (x)
           (let ([stored-val (retrieve x)])
